@@ -10,7 +10,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   /* ChinesePod brand colors */
-  --red:#E1001E;
+  --red : #E1011F;
   --red-bg:#FEF2F3;
   --red-b:#FECDCA;
   --black:#000000;
@@ -80,10 +80,10 @@ html,body{
   margin-bottom:36px;
 }
 .cp-logo-icon{
-  width:36px;height:36px;
+  width:100%;height:50px;
   position:relative;
 }
-.cp-logo-icon svg{width:100%;height:100%}
+/* .cp-logo-icon svg{width:100%;height:100%} */
 .cp-logo-text{
   font-family:'Roboto',sans-serif;
   font-size:22px;font-weight:700;
@@ -568,13 +568,14 @@ html,body{
   <div class="level-wrap">
     <div class="cp-logo">
       <!-- ChinesePod pictogram SVG (simplified) -->
-      <svg class="cp-logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+       <img class="cp-logo-icon" src="https://s3.amazonaws.com/assets.chinesepod/images/logo.chinesepod.svg" alt="">
+      <!-- <svg class="cp-logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="18" cy="7" r="4.5" fill="#E1001E"/>
         <path d="M18 13 L10 26 L26 26 Z" fill="#000000"/>
         <path d="M10 18 L4 28" stroke="#E1001E" stroke-width="2.5" stroke-linecap="round"/>
         <path d="M26 18 L32 28" stroke="#000000" stroke-width="2.5" stroke-linecap="round"/>
       </svg>
-      <span class="cp-logo-text">ChinesePod</span>
+      <span class="cp-logo-text">ChinesePod</span> -->
     </div>
     <div class="level-eyebrow">Character Quiz</div>
     <h1 class="level-h">Choose your level</h1>
