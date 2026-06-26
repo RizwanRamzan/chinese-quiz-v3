@@ -3,111 +3,273 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChinesePod · Lesson 1</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>ChinesePod · Character Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+/* ── RESET & ROOT ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F7F6F2;
+  /* ChinesePod brand colors */
+  --red:#E1001E;
+  --red-bg:#FEF2F3;
+  --red-b:#FECDCA;
+  --black:#000000;
+  --white:#FFFFFF;
+
+  /* UI colors */
+  --bg:#F8F7F5;
   --card:#FFFFFF;
-  --border:#E4E2DC;
+  --border:#E2E0DC;
   --ink:#1A1917;
   --ink2:#6B6860;
   --ink3:#AEACA6;
-  --red:#D93025;
-  --red-bg:#FEF2F1;
-  --red-b:#FECDCA;
   --green:#1A7A3C;
   --green-bg:#F0FDF5;
   --green-b:#A7F3C0;
   --amber:#B45309;
   --amber-bg:#FFFBEB;
   --amber-b:#FDE68A;
-  --blue:#1D4ED8;
+  --blue:#2487C1;
   --blue-bg:#EFF6FF;
-  --shadow:0 2px 12px rgba(26,25,23,.08);
-  --shadow-lg:0 12px 48px rgba(26,25,23,.14);
+  --blue-b:#BFDBFE;
+
+  --shadow:0 2px 12px rgba(26,25,23,.07);
+  --shadow-lg:0 12px 48px rgba(26,25,23,.13);
+  --radius:20px;
 }
-html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
+
+html,body{
+  height:100%;
+  font-family:'Roboto',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  overflow-x:hidden;
+}
 
 /* ── SCREENS ── */
 .screen{display:none;min-height:100vh;width:100%}
 .screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center}
 
-/* ══ INTRO ══ */
+/* ══════════════════════════════
+   LEVEL SELECTOR SCREEN
+══════════════════════════════ */
+#s-level{
+  padding:40px 20px;
+  background:var(--bg);
+  position:relative;
+  overflow:hidden;
+}
+.level-bg{
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Sans SC',serif;
+  font-size:380px;
+  color:rgba(225,0,30,.04);
+  pointer-events:none;user-select:none;z-index:0;
+  animation:bgSway 8s ease-in-out infinite;
+}
+@keyframes bgSway{0%,100%{transform:scale(1) rotate(-1deg)}50%{transform:scale(1.03) rotate(1deg)}}
+
+.level-wrap{
+  position:relative;z-index:1;
+  max-width:560px;width:100%;
+  text-align:center;
+}
+.cp-logo{
+  display:inline-flex;align-items:center;gap:10px;
+  margin-bottom:36px;
+}
+.cp-logo-icon{
+  width:36px;height:36px;
+  position:relative;
+}
+.cp-logo-icon svg{width:100%;height:100%}
+.cp-logo-text{
+  font-family:'Roboto',sans-serif;
+  font-size:22px;font-weight:700;
+  color:var(--ink);
+  letter-spacing:-.02em;
+}
+
+.level-eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--red);
+  margin-bottom:14px;
+}
+.level-h{
+  font-family:'Roboto Slab',serif;
+  font-size:clamp(30px,5vw,42px);
+  font-weight:700;
+  line-height:1.1;
+  color:var(--ink);
+  margin-bottom:12px;
+}
+.level-sub{
+  font-size:15px;color:var(--ink2);
+  font-weight:300;line-height:1.7;
+  margin-bottom:40px;
+}
+
+.level-cards{
+  display:flex;flex-direction:column;gap:14px;
+  margin-bottom:32px;
+}
+.level-card{
+  background:var(--card);
+  border:2px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px 28px;
+  display:flex;align-items:center;gap:20px;
+  cursor:pointer;text-align:left;
+  transition:all .22s cubic-bezier(.4,0,.2,1);
+  animation:cardIn .45s cubic-bezier(.34,1.56,.64,1) both;
+}
+.level-card:nth-child(1){animation-delay:.05s}
+.level-card:nth-child(2){animation-delay:.12s}
+.level-card:nth-child(3){animation-delay:.19s}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}
+.level-card:hover{
+  border-color:var(--red);
+  transform:translateX(6px);
+  box-shadow:0 6px 24px rgba(225,0,30,.12);
+}
+.level-badge{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  font-family:'Noto Sans SC',serif;
+  font-size:28px;
+  font-weight:700;
+}
+.lv-newbie .level-badge{background:var(--green-bg);color:var(--green)}
+.lv-preint .level-badge{background:var(--blue-bg);color:var(--blue)}
+.lv-upper .level-badge{background:var(--red-bg);color:var(--red)}
+
+.level-info{flex:1}
+.level-name{
+  font-weight:700;font-size:17px;
+  color:var(--ink);margin-bottom:3px;
+}
+.level-desc{
+  font-size:13px;color:var(--ink2);font-weight:400;line-height:1.5;
+}
+.level-pill{
+  font-size:10px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding:4px 12px;border-radius:100px;
+  flex-shrink:0;
+}
+.lv-newbie .level-pill{background:var(--green-bg);color:var(--green)}
+.lv-preint .level-pill{background:var(--blue-bg);color:var(--blue)}
+.lv-upper .level-pill{background:var(--red-bg);color:var(--red)}
+
+.level-footer{
+  font-size:12px;color:var(--ink3);font-weight:400;
+}
+
+/* ══════════════════════════════
+   INTRO SCREEN
+══════════════════════════════ */
 #s-intro{padding:40px 20px;position:relative;overflow:hidden}
 .intro-bg{
-  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:'Noto Serif SC',serif;font-size:340px;color:rgba(26,25,23,.03);
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Sans SC',serif;
+  font-size:340px;color:rgba(225,0,30,.04);
   pointer-events:none;user-select:none;z-index:0;
-  animation:bgPulse 6s ease-in-out infinite;
+  animation:bgSway 6s ease-in-out infinite;
 }
-@keyframes bgPulse{0%,100%{transform:scale(1) rotate(-2deg)}50%{transform:scale(1.04) rotate(2deg)}}
 .intro-box{
   position:relative;z-index:1;max-width:520px;width:100%;
-  background:var(--card);border:1px solid var(--border);border-radius:28px;
-  padding:48px 40px;box-shadow:var(--shadow-lg);text-align:center;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:28px;padding:48px 40px;
+  box-shadow:var(--shadow-lg);text-align:center;
 }
 .intro-pill{
   display:inline-flex;align-items:center;gap:7px;
   background:var(--red-bg);border:1px solid var(--red-b);
   border-radius:100px;padding:5px 16px;
-  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);
+  font-size:11px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--red);
   margin-bottom:24px;
 }
 .intro-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--red)}
-.intro-h{font-size:clamp(32px,6vw,48px);font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:12px}
-.intro-h span{font-family:'Noto Serif SC',serif;color:var(--red)}
-.intro-p{font-size:15px;color:var(--ink2);line-height:1.7;margin-bottom:32px;font-weight:300}
-.intro-chars{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px}
+.intro-h{
+  font-family:'Roboto Slab',serif;
+  font-size:clamp(28px,5vw,40px);
+  font-weight:700;letter-spacing:-.02em;line-height:1.15;
+  margin-bottom:10px;
+}
+.intro-h span{color:var(--red)}
+.intro-p{font-size:15px;color:var(--ink2);line-height:1.7;margin-bottom:28px;font-weight:300}
+
+.intro-chars{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:28px}
 .ic{
   background:var(--bg);border:1px solid var(--border);border-radius:14px;
   padding:12px 14px;display:flex;flex-direction:column;align-items:center;gap:3px;
   animation:icIn .5s cubic-bezier(.34,1.56,.64,1) both;cursor:default;
   transition:all .22s;
 }
-.ic:hover{border-color:var(--red);background:#fff;transform:translateY(-3px);box-shadow:0 6px 20px rgba(217,48,37,.12)}
+.ic:hover{border-color:var(--red);background:#fff;transform:translateY(-3px);box-shadow:0 6px 20px rgba(225,0,30,.1)}
 @keyframes icIn{from{opacity:0;transform:translateY(18px) scale(.88)}to{opacity:1;transform:none}}
-.ic-c{font-family:'Noto Serif SC',serif;font-size:32px;line-height:1;color:var(--ink)}
+.ic-c{font-family:'Noto Sans SC',serif;font-size:30px;line-height:1;color:var(--ink)}
 .ic-p{font-size:10px;font-weight:700;color:var(--red);letter-spacing:.02em}
 .ic-m{font-size:9px;color:var(--ink3);font-weight:500}
+
+.intro-btns{display:flex;flex-direction:column;gap:10px;align-items:center}
 .btn-start{
   display:inline-flex;align-items:center;gap:10px;
-  background:var(--ink);color:#fff;border:none;border-radius:100px;
-  padding:15px 36px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;
-  cursor:pointer;letter-spacing:-.01em;
-  box-shadow:0 4px 20px rgba(26,25,23,.22);transition:all .2s;
+  background:var(--red);color:#fff;border:none;border-radius:100px;
+  padding:15px 36px;font-family:'Roboto',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;letter-spacing:.01em;
+  box-shadow:0 4px 20px rgba(225,0,30,.28);transition:all .2s;
 }
-.btn-start:hover{background:var(--red);transform:translateY(-2px);box-shadow:0 8px 28px rgba(217,48,37,.3)}
+.btn-start:hover{background:#c50019;transform:translateY(-2px);box-shadow:0 8px 28px rgba(225,0,30,.36)}
+.btn-back-level{
+  background:none;border:none;
+  font-size:13px;color:var(--ink3);font-weight:500;cursor:pointer;
+  font-family:'Roboto',sans-serif;padding:4px 8px;transition:color .2s;
+}
+.btn-back-level:hover{color:var(--ink)}
 
-/* ══ GAME ══ */
+/* ══════════════════════════════
+   GAME SCREEN
+══════════════════════════════ */
 #s-game{justify-content:flex-start;padding:0}
 
-/* topbar */
+/* top bar */
 .tb{
   width:100%;background:var(--card);border-bottom:1px solid var(--border);
   display:flex;align-items:center;gap:14px;padding:14px 24px;
   position:sticky;top:0;z-index:100;
 }
-.tb-logo{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;flex-shrink:0}
-.tb-dot{width:7px;height:7px;border-radius:50%;background:var(--red)}
-.tb-bar-wrap{flex:1;display:flex;flex-direction:column;gap:5px}
-.tb-track{height:5px;background:var(--bg);border-radius:3px;overflow:hidden}
-.tb-fill{height:100%;background:var(--red);border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.tb-logo{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;flex-shrink:0}
+.tb-logo-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--red);
+}
+.tb-level-pill{
+  font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 9px;border-radius:100px;background:var(--red-bg);color:var(--red);
+}
+
+.tb-bar-wrap{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0}
+.tb-track{height:4px;background:var(--bg);border-radius:2px;overflow:hidden}
+.tb-fill{height:100%;background:var(--red);border-radius:2px;transition:width .6s cubic-bezier(.4,0,.2,1)}
 .tb-dots{display:flex;gap:5px}
 .tdot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .3s}
 .tdot.ok{background:var(--green)}
 .tdot.bad{background:var(--red)}
+
 .tb-cnt{font-size:12px;font-weight:700;color:var(--ink2);white-space:nowrap;flex-shrink:0}
 
-/* game center stage */
+/* game stage */
 .stage{
   width:100%;max-width:680px;
   padding:32px 20px 48px;
-  display:flex;flex-direction:column;align-items:center;gap:24px;
+  display:flex;flex-direction:column;align-items:center;gap:22px;
 }
 
-/* ── PHASE 1: question card ── */
+/* ── Question card ── */
 .q-card{
   width:100%;background:var(--card);border:1px solid var(--border);
   border-radius:24px;padding:40px;
@@ -128,7 +290,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border);
 }
 .the-char{
-  font-family:'Noto Serif SC',serif;font-size:96px;font-weight:700;
+  font-family:'Noto Sans SC',serif;font-size:96px;font-weight:700;
   color:var(--ink);line-height:1;position:relative;z-index:2;user-select:none;
 }
 .the-char.pop{animation:cPop .5s cubic-bezier(.34,1.56,.64,1)}
@@ -144,7 +306,7 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 }
 .q-speaking{
   display:inline-flex;align-items:center;gap:8px;
-  background:var(--blue-bg);border:1px solid #BFDBFE;border-radius:100px;
+  background:var(--blue-bg);border:1px solid var(--blue-b);border-radius:100px;
   padding:6px 16px;font-size:12px;font-weight:600;color:var(--blue);
   animation:fadeIn .3s ease;
 }
@@ -157,22 +319,34 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .wave span:nth-child(5){height:6px;animation-delay:.6s}
 @keyframes wv{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
 
-/* ── OPTIONS ── */
+/* hint pill */
+.hint-pill{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--amber-bg);border:1px solid var(--amber-b);border-radius:100px;
+  padding:7px 16px;font-size:12px;font-weight:500;color:var(--amber);
+  opacity:0;transform:translateY(6px);transition:all .35s;
+}
+.hint-pill.show{opacity:1;transform:none}
+
+/* ── OPTIONS ──
+   KEY FIX: No character shown in choices.
+   Clean text-only option buttons.
+── */
 .opts{width:100%;display:flex;flex-direction:column;gap:10px}
 .opt{
-  background:var(--card);border:2px solid var(--border);border-radius:18px;
-  padding:18px 22px;display:flex;align-items:center;gap:16px;
+  background:var(--card);border:2px solid var(--border);border-radius:16px;
+  padding:16px 20px;display:flex;align-items:center;gap:14px;
   cursor:pointer;text-align:left;width:100%;outline:none;
   transition:border-color .18s, background .18s, transform .18s;
-  position:relative;overflow:hidden;
   animation:optSlide .35s cubic-bezier(.34,1.56,.64,1) both;
 }
 .opt:nth-child(1){animation-delay:.05s}
 .opt:nth-child(2){animation-delay:.12s}
 .opt:nth-child(3){animation-delay:.19s}
 @keyframes optSlide{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
-.opt:hover:not(:disabled){border-color:var(--ink);background:var(--bg);transform:translateX(5px)}
+.opt:hover:not(:disabled){border-color:var(--red);background:var(--red-bg);transform:translateX(5px)}
 .opt:disabled{cursor:default}
+
 .opt-num{
   width:34px;height:34px;border-radius:10px;
   background:var(--bg);border:1px solid var(--border);
@@ -180,35 +354,37 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   font-size:12px;font-weight:700;color:var(--ink2);flex-shrink:0;
   transition:all .2s;
 }
-.opt-char-sm{
-  font-family:'Noto Serif SC',serif;font-size:30px;
-  color:var(--ink);width:38px;text-align:center;flex-shrink:0;
-  transition:color .2s;
+/* No opt-char-sm — removed per client feedback */
+.opt-label{
+  font-size:16px;font-weight:500;color:var(--ink);flex:1;transition:color .2s;
 }
-.opt-label{font-size:16px;font-weight:500;color:var(--ink);flex:1;transition:color .2s}
+.opt-pinyin{
+  font-size:12px;color:var(--ink3);font-weight:400;
+  font-family:'Noto Sans SC',serif;margin-top:1px;
+}
 .opt-check{
   width:22px;height:22px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   opacity:0;font-size:12px;flex-shrink:0;transition:opacity .2s;
 }
 
-/* states */
+/* option states */
 .opt.s-correct{background:var(--green-bg);border-color:var(--green);transform:none;animation:slideRight .35s ease}
 .opt.s-correct .opt-num{background:var(--green);border-color:var(--green);color:#fff}
-.opt.s-correct .opt-char-sm,.opt.s-correct .opt-label{color:var(--green)}
+.opt.s-correct .opt-label{color:var(--green)}
 .opt.s-correct .opt-check{opacity:1;background:var(--green);color:#fff}
-@keyframes slideRight{from{transform:translateX(-10px);opacity:.6}to{transform:none;opacity:1}}
+@keyframes slideRight{from{transform:translateX(-8px);opacity:.6}to{transform:none;opacity:1}}
 
 .opt.s-wrong{background:var(--red-bg);border-color:var(--red);animation:optWrong .45s ease}
 .opt.s-wrong .opt-num{background:var(--red);border-color:var(--red);color:#fff}
-.opt.s-wrong .opt-char-sm,.opt.s-wrong .opt-label{color:var(--red)}
+.opt.s-wrong .opt-label{color:var(--red)}
 .opt.s-wrong .opt-check{opacity:1;background:var(--red);color:#fff}
 @keyframes optWrong{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 
 .opt.s-reveal{background:var(--green-bg);border-color:var(--green);border-style:dashed}
-.opt.s-reveal .opt-char-sm,.opt.s-reveal .opt-label{color:var(--green)}
+.opt.s-reveal .opt-label{color:var(--green)}
 
-/* ── GUIDE PANEL (shown after wrong) ── */
+/* ── GUIDE PANEL ── */
 .guide{
   width:100%;background:var(--card);border:1px solid var(--border);
   border-radius:24px;overflow:hidden;box-shadow:var(--shadow);
@@ -216,65 +392,72 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 }
 @keyframes guideIn{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
 
-/* Comparison section — BIG animated chars */
-.cmp-section{padding:32px 32px 24px;border-bottom:1px solid var(--border)}
-.cmp-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:20px}
-.cmp-row{display:flex;gap:12px;align-items:stretch}
+/* Comparison section — shows chars here AFTER answer, not in options */
+.cmp-section{padding:28px 28px 20px;border-bottom:1px solid var(--border)}
+.cmp-label{
+  font-size:10px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink3);margin-bottom:18px;
+}
+.cmp-row{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
 .cmp-card{
-  flex:1;border-radius:18px;padding:20px 12px;
-  display:flex;flex-direction:column;align-items:center;gap:6px;
+  flex:1;min-width:80px;border-radius:16px;padding:18px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
   border:2px solid var(--border);background:var(--bg);
   transition:all .4s cubic-bezier(.34,1.56,.64,1);
-  position:relative;overflow:hidden;
 }
 .cmp-card.c-correct{background:var(--green-bg);border-color:var(--green)}
 .cmp-card.c-wrong{background:var(--red-bg);border-color:var(--red)}
-.cmp-card.c-neutral{}
-
-/* animated swap: wrong→correct */
 .cmp-card.animate-swap{animation:swapIn .7s cubic-bezier(.34,1.56,.64,1)}
 @keyframes swapIn{0%{transform:scale(.5) rotateY(90deg);opacity:0}60%{transform:scale(1.12) rotateY(-5deg)}100%{transform:scale(1) rotateY(0);opacity:1}}
 
 .cmp-big-char{
-  font-family:'Noto Serif SC',serif;font-size:64px;font-weight:700;
-  line-height:1;color:var(--ink);transition:color .4s;
+  font-family:'Noto Sans SC',serif;font-size:56px;font-weight:700;
+  line-height:1;color:var(--ink);
 }
 .cmp-card.c-correct .cmp-big-char{color:var(--green)}
 .cmp-card.c-wrong .cmp-big-char{color:var(--red)}
-.cmp-py{font-size:14px;font-weight:700;color:var(--red)}
+.cmp-py{font-size:13px;font-weight:700;color:var(--red);font-family:'Noto Sans SC',serif}
 .cmp-card.c-correct .cmp-py{color:var(--green)}
-.cmp-en{font-size:12px;color:var(--ink2);font-weight:500;text-align:center}
+.cmp-en{font-size:11px;color:var(--ink2);font-weight:500;text-align:center}
 .cmp-tag{
   font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
   padding:3px 10px;border-radius:100px;margin-top:2px;
 }
 .cmp-card.c-correct .cmp-tag{background:var(--green);color:#fff}
 .cmp-card.c-wrong .cmp-tag{background:var(--red);color:#fff}
-
-/* arrow between cards */
 .cmp-arrow{
   display:flex;align-items:center;justify-content:center;
-  color:var(--ink3);font-size:20px;flex-shrink:0;padding:0 4px;
+  color:var(--ink3);font-size:18px;flex-shrink:0;padding:0 2px;
   opacity:0;animation:arrowIn .5s ease .4s forwards;
 }
 @keyframes arrowIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
 
 /* Guide body */
-.guide-body{padding:24px 32px;display:flex;flex-direction:column;gap:16px}
-.g-sec-title{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
-.g-why{background:var(--red-bg);border:1px solid var(--red-b);border-left:3px solid var(--red);border-radius:12px;padding:14px 16px}
+.guide-body{padding:22px 28px;display:flex;flex-direction:column;gap:14px}
+.g-sec-title{
+  font-size:10px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink3);margin-bottom:5px;
+}
+.g-why{
+  background:var(--red-bg);border:1px solid var(--red-b);
+  border-left:3px solid var(--red);border-radius:12px;padding:14px 16px;
+}
 .g-why p{font-size:13px;line-height:1.75;color:#7F1D1D}
-.g-story{background:var(--blue-bg);border:1px solid #BFDBFE;border-radius:12px;padding:14px 16px}
+.g-story{
+  background:var(--blue-bg);border:1px solid var(--blue-b);border-radius:12px;padding:14px 16px;
+}
 .g-story p{font-size:13px;line-height:1.75;color:#1E40AF}
-.g-tip{background:var(--amber-bg);border:1px solid var(--amber-b);border-left:3px solid #F59E0B;border-radius:12px;padding:14px 16px}
+.g-tip{
+  background:var(--amber-bg);border:1px solid var(--amber-b);
+  border-left:3px solid #F59E0B;border-radius:12px;padding:14px 16px;
+}
 .g-tip p{font-size:13px;line-height:1.75;color:#78350F}
-.g-tip strong{color:#451A03}
 .g-voice{
   display:flex;align-items:center;gap:8px;
   background:var(--bg);border:1px solid var(--border);border-radius:100px;
   padding:8px 16px;font-size:12px;font-weight:600;color:var(--ink2);
-  cursor:pointer;align-self:flex-start;border:none;font-family:'Outfit',sans-serif;
-  transition:all .2s;
+  cursor:pointer;align-self:flex-start;
+  transition:all .2s;font-family:'Roboto',sans-serif;
 }
 .g-voice:hover{background:var(--ink);color:#fff}
 
@@ -285,31 +468,42 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   display:flex;align-items:center;gap:14px;
   animation:guideIn .4s ease;
 }
-.cb-icon{width:40px;height:40px;border-radius:12px;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.cb-icon{
+  width:40px;height:40px;border-radius:12px;
+  background:var(--green);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
 .cb-title{font-size:15px;font-weight:700;color:var(--green);margin-bottom:2px}
 .cb-text{font-size:13px;color:var(--ink2);line-height:1.5}
 
+/* Correct: also shows the character with pinyin */
+.cb-char-reveal{
+  display:flex;align-items:center;gap:12px;
+  margin-left:auto;flex-shrink:0;
+}
+.cb-char{
+  font-family:'Noto Sans SC',serif;font-size:40px;font-weight:700;
+  color:var(--green);line-height:1;
+}
+.cb-char-info{display:flex;flex-direction:column;gap:1px}
+.cb-py{font-size:12px;font-weight:700;color:var(--green)}
+.cb-en{font-size:11px;color:var(--ink3)}
+
 /* NEXT button */
 .btn-next{
-  width:100%;padding:16px;background:var(--ink);color:#fff;
+  width:100%;padding:16px;background:var(--red);color:#fff;
   border:none;border-radius:14px;
-  font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;
+  font-family:'Roboto',sans-serif;font-size:15px;font-weight:700;
   cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
-  box-shadow:0 4px 16px rgba(26,25,23,.18);transition:all .2s;
+  box-shadow:0 4px 16px rgba(225,0,30,.22);transition:all .2s;
   animation:guideIn .3s ease;
 }
-.btn-next:hover{background:var(--red);box-shadow:0 6px 20px rgba(217,48,37,.28);transform:translateY(-1px)}
+.btn-next:hover{background:#c50019;box-shadow:0 6px 20px rgba(225,0,30,.32);transform:translateY(-1px)}
 
-/* hint pill */
-.hint-pill{
-  display:inline-flex;align-items:center;gap:7px;
-  background:var(--amber-bg);border:1px solid var(--amber-b);border-radius:100px;
-  padding:7px 16px;font-size:12px;font-weight:500;color:var(--amber);
-  opacity:0;transform:translateY(6px);transition:all .35s;
-}
-.hint-pill.show{opacity:1;transform:none}
-
-/* ══ RESULTS ══ */
+/* ══════════════════════════════
+   RESULTS SCREEN
+══════════════════════════════ */
 #s-results{padding:40px 20px}
 .res-box{
   background:var(--card);border:1px solid var(--border);border-radius:28px;
@@ -319,25 +513,44 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 .ring-wrap{width:120px;height:120px;position:relative;margin:0 auto 24px}
 .ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
 .ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ring-num{font-size:30px;font-weight:700;color:var(--ink);line-height:1}
+.ring-num{font-size:30px;font-weight:700;color:var(--ink);line-height:1;font-family:'Roboto Slab',serif}
 .ring-lbl{font-size:10px;color:var(--ink3);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-.res-h{font-size:26px;font-weight:700;color:var(--ink);margin-bottom:6px}
+
+.res-h{
+  font-family:'Roboto Slab',serif;
+  font-size:26px;font-weight:700;color:var(--ink);margin-bottom:6px;
+}
 .res-s{font-size:14px;color:var(--ink2);line-height:1.6;margin-bottom:28px}
 .res-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:28px}
-.rchip{width:60px;height:70px;border-radius:14px;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:var(--bg)}
+.rchip{
+  width:64px;height:72px;border-radius:14px;border:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;background:var(--bg);
+}
 .rchip.ok{background:var(--green-bg);border-color:var(--green-b)}
 .rchip.fail{background:var(--red-bg);border-color:var(--red-b)}
-.rchip-c{font-family:'Noto Serif SC',serif;font-size:24px;color:var(--ink)}
+.rchip-c{font-family:'Noto Sans SC',serif;font-size:26px;color:var(--ink)}
 .rchip.ok .rchip-c{color:var(--green)}
 .rchip.fail .rchip-c{color:var(--red)}
-.rchip-l{font-size:9px;color:var(--ink3);text-align:center;font-weight:600}
+.rchip-l{font-size:8px;color:var(--ink3);text-align:center;font-weight:600;padding:0 4px}
+
+.res-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .btn-again{
   display:inline-flex;align-items:center;gap:8px;
-  background:var(--ink);color:#fff;border:none;border-radius:100px;
-  padding:13px 32px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;
-  cursor:pointer;box-shadow:0 4px 20px rgba(26,25,23,.2);transition:all .2s;
+  background:var(--red);color:#fff;border:none;border-radius:100px;
+  padding:13px 28px;font-family:'Roboto',sans-serif;
+  font-size:14px;font-weight:700;
+  cursor:pointer;box-shadow:0 4px 20px rgba(225,0,30,.22);transition:all .2s;
 }
-.btn-again:hover{background:var(--red);transform:translateY(-2px)}
+.btn-again:hover{background:#c50019;transform:translateY(-2px)}
+.btn-change-level{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--bg);color:var(--ink2);border:1px solid var(--border);border-radius:100px;
+  padding:13px 28px;font-family:'Roboto',sans-serif;
+  font-size:14px;font-weight:500;
+  cursor:pointer;transition:all .2s;
+}
+.btn-change-level:hover{background:var(--card);border-color:var(--ink);color:var(--ink)}
 
 /* confetti */
 .cf-wrap{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
@@ -349,25 +562,80 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
 </head>
 <body>
 
+<!-- ══ LEVEL SELECT ══ -->
+<div id="s-level" class="screen active">
+  <div class="level-bg" id="levelBg">学</div>
+  <div class="level-wrap">
+    <div class="cp-logo">
+      <!-- ChinesePod pictogram SVG (simplified) -->
+      <svg class="cp-logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="7" r="4.5" fill="#E1001E"/>
+        <path d="M18 13 L10 26 L26 26 Z" fill="#000000"/>
+        <path d="M10 18 L4 28" stroke="#E1001E" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M26 18 L32 28" stroke="#000000" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span class="cp-logo-text">ChinesePod</span>
+    </div>
+    <div class="level-eyebrow">Character Quiz</div>
+    <h1 class="level-h">Choose your level</h1>
+    <p class="level-sub">Each quiz has 8 characters matched to your level.<br>Voice-guided with instant feedback.</p>
+
+    <div class="level-cards">
+      <div class="level-card lv-newbie" onclick="selectLevel('newbie')">
+        <div class="level-badge">新</div>
+        <div class="level-info">
+          <div class="level-name">Newbie</div>
+          <div class="level-desc">Basic pictographs — mouth, person, sun, moon and more. Perfect if you are just starting out.</div>
+        </div>
+        <div class="level-pill">Beginner</div>
+      </div>
+      <div class="level-card lv-preint" onclick="selectLevel('preint')">
+        <div class="level-badge">中</div>
+        <div class="level-info">
+          <div class="level-name">Pre-Intermediate</div>
+          <div class="level-desc">Compound characters built from radicals — body, actions, places, and time.</div>
+        </div>
+        <div class="level-pill">Pre-Int</div>
+      </div>
+      <div class="level-card lv-upper" onclick="selectLevel('upper')">
+        <div class="level-badge">高</div>
+        <div class="level-info">
+          <div class="level-name">Upper Intermediate</div>
+          <div class="level-desc">Complex characters with layered meaning — emotions, abstract concepts, and HSK 4–5 vocabulary.</div>
+        </div>
+        <div class="level-pill">Upper-Int</div>
+      </div>
+    </div>
+    <div class="level-footer">10 questions per level · Browser voice audio included</div>
+  </div>
+</div>
+
 <!-- ══ INTRO ══ -->
-<div id="s-intro" class="screen active">
+<div id="s-intro" class="screen">
   <div class="intro-bg" id="introBg">学</div>
   <div class="intro-box">
-    <div class="intro-pill"><div class="intro-pill-dot"></div>ChinesePod · Lesson 1</div>
-    <h1 class="intro-h">Learn <span>8</span> Chinese<br>Characters</h1>
-    <p class="intro-p">Voice-guided quiz with instant feedback.<br>Learn why every character looks the way it does.</p>
+    <div class="intro-pill"><div class="intro-pill-dot"></div><span id="introPillText">ChinesePod · Newbie</span></div>
+    <h1 class="intro-h">Learn <span>10</span> Chinese<br>Characters</h1>
+    <p class="intro-p">Voice-guided quiz with instant feedback.<br>Discover why every character looks the way it does.</p>
     <div class="intro-chars" id="introChars"></div>
-    <button class="btn-start" onclick="startGame()">
-      Start Lesson
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
+    <div class="intro-btns">
+      <button class="btn-start" onclick="startGame()">
+        Start Quiz
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <button class="btn-back-level" onclick="show('s-level')">← Change level</button>
+    </div>
   </div>
 </div>
 
 <!-- ══ GAME ══ -->
 <div id="s-game" class="screen">
   <div class="tb">
-    <div class="tb-logo"><div class="tb-dot"></div>ChinesePod</div>
+    <div class="tb-logo">
+      <div class="tb-logo-dot"></div>
+      ChinesePod
+      <div class="tb-level-pill" id="tbLevelPill">Newbie</div>
+    </div>
     <div class="tb-bar-wrap">
       <div class="tb-track"><div class="tb-fill" id="tbFill" style="width:0%"></div></div>
       <div class="tb-dots" id="tbDots"></div>
@@ -382,8 +650,8 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
   <div class="res-box">
     <div class="ring-wrap">
       <svg viewBox="0 0 120 120">
-        <circle cx="60" cy="60" r="50" fill="none" stroke="#E4E2DC" stroke-width="10"/>
-        <circle cx="60" cy="60" r="50" fill="none" stroke="#1A7A3C" stroke-width="10"
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#E2E0DC" stroke-width="10"/>
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#E1001E" stroke-width="10"
           stroke-dasharray="314.2" stroke-dashoffset="314.2" id="scoreRing" stroke-linecap="round"/>
       </svg>
       <div class="ring-center">
@@ -394,388 +662,771 @@ html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color
     <div class="res-h" id="resH">Well done!</div>
     <div class="res-s" id="resS"></div>
     <div class="res-chips" id="resChips"></div>
-    <button class="btn-again" onclick="restartGame()">
-      Play Again
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
-    </button>
+    <div class="res-btns">
+      <button class="btn-again" onclick="restartGame()">
+        Try Again
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
+      </button>
+      <button class="btn-change-level" onclick="show('s-level')">Change Level</button>
+    </div>
   </div>
 </div>
 
 <div class="cf-wrap" id="cfWrap"></div>
 
 <script>
-const DATA = [
-  {
-    char:'口',pinyin:'kǒu',meaning:'mouth',
-    intro:'Look at this character carefully. What do you think it means?',
-    question:'The character 口 — what does it mean?',
-    options:['mouth','door','sun'],
-    related:[{char:'口',py:'kǒu',en:'mouth'},{char:'门',py:'mén',en:'door'},{char:'日',py:'rì',en:'sun'}],
-    correctSpeech:'Excellent! 口, pronounced kǒu, means mouth. This square shape is like your lips forming a circle to speak.',
-    wrongGuide:'You selected {choice}, but 口, pronounced kǒu, means MOUTH. Look at how 口 is just a square opening — like your lips. Compare it with 门 meaning door, which has two panels inside, and 日 meaning sun, which is taller with a horizontal stroke across the middle.',
-    etymology:'口 is one of the oldest pictographs. In ancient oracle bone script, it was a simple square — the outline of open lips. Today it appears in hundreds of words: 口水 meaning saliva, 出口 meaning exit, and 人口 meaning population.',
-    strokeTip:'Write 口 in 3 strokes: first the left side going down, then top and right side turning down, then close the bottom with a horizontal stroke. Always close the box last!'
+/* ══════════════════════════════════════════════
+   QUIZ DATA — 3 LEVELS, 8 QUESTIONS EACH
+   KEY FIX: options array is ENGLISH ONLY (no characters).
+   Characters are ONLY shown in the main char-stage display
+   and in the comparison panel AFTER answering.
+══════════════════════════════════════════════ */
+
+const LEVELS = {
+
+  /* ─────────── NEWBIE ─────────── */
+  newbie: {
+    label: 'Newbie',
+    pillLabel: 'ChinesePod · Newbie',
+    data: [
+      {
+        char:'口', pinyin:'kǒu', meaning:'mouth',
+        intro:'Look at this character carefully. What shape do you see?',
+        question:'The character 口 — what does it mean?',
+        options:['mouth','door','sun'],
+        related:[{char:'口',py:'kǒu',en:'mouth'},{char:'门',py:'mén',en:'door'},{char:'日',py:'rì',en:'sun'}],
+        correctSpeech:'Excellent! 口, pronounced kǒu, means mouth. This simple square is like your lips forming a circle to speak.',
+        wrongGuide:'You selected {choice}, but 口 means MOUTH. The square outline is the shape of open lips. Compare 门 meaning door, which has two panels inside, and 日 meaning sun, which is taller with a stroke across the middle.',
+        etymology:'口 is one of the oldest pictographs. In ancient oracle bone script it was a simple square — the outline of open lips. It appears in hundreds of words: 口水 saliva, 出口 exit, and 人口 population.',
+        strokeTip:'Write 口 in 3 strokes: left side going down, top and right side turning down, then close the bottom. Always close the box last!'
+      },
+      {
+        char:'人', pinyin:'rén', meaning:'person',
+        intro:'This is one of the most ancient Chinese pictographs. What do you see in those two strokes?',
+        question:'The character 人 — what does it mean?',
+        options:['person','to enter','big'],
+        related:[{char:'人',py:'rén',en:'person'},{char:'入',py:'rù',en:'to enter'},{char:'大',py:'dà',en:'big'}],
+        correctSpeech:'Wonderful! 人, pronounced rén, means person. Two balanced strokes — a human figure seen from the side, walking forward.',
+        wrongGuide:'You chose {choice}, but 人 means PERSON. Both strokes spread evenly like legs walking. Compare 入 meaning to enter, where the right stroke is longer. And 大 meaning big, adds arms spread wide.',
+        etymology:'人 is one of the oldest pictographs — a person seen in profile. It appears in 人口 population, 大人 adult, and 工人 worker.',
+        strokeTip:'Write 人 in 2 strokes: left-falling stroke from the top, then right-falling stroke starting slightly to the right. Master this and you will see it everywhere!'
+      },
+      {
+        char:'日', pinyin:'rì', meaning:'sun / day',
+        intro:'Ancient people drew what they saw. What natural thing does this character represent?',
+        question:'The character 日 — what does it mean?',
+        options:['sun / day','moon','eye'],
+        related:[{char:'日',py:'rì',en:'sun/day'},{char:'月',py:'yuè',en:'moon'},{char:'目',py:'mù',en:'eye'}],
+        correctSpeech:'Correct! 日, pronounced rì, means sun or day. The box is the bright disc, and the stroke through the middle is the sun\'s blinding core.',
+        wrongGuide:'You chose {choice}, but 日 means SUN or DAY. The rectangle with a stroke across the middle is the blazing sun. Compare 月 the moon, which is narrower with two inner strokes, and 目 the eye, also rectangular but taller.',
+        etymology:'日 is a pictograph of the sun. Ancient oracle bone inscriptions show a circle with a dot in the centre. Used in 今日 today, 日本 Japan, and 日记 diary.',
+        strokeTip:'Write 日 in 4 strokes: left side down, top-right corner turning down, the inner horizontal stroke, then close the bottom. The middle stroke never touches the sides!'
+      },
+      {
+        char:'月', pinyin:'yuè', meaning:'moon / month',
+        intro:'This character shows something in the night sky. Can you identify it?',
+        question:'The character 月 — what does it mean?',
+        options:['moon / month','sun','evening'],
+        related:[{char:'月',py:'yuè',en:'moon/month'},{char:'日',py:'rì',en:'sun'},{char:'夜',py:'yè',en:'evening'}],
+        correctSpeech:'Great! 月, pronounced yuè, means moon or month. The narrower shape shows the crescent, and the two inner strokes are the shadows on the moon\'s face.',
+        wrongGuide:'You chose {choice}, but 月 means MOON or MONTH. It is narrower than 日 the sun, and has two inner horizontal strokes instead of one. Ancient people used the moon to count months.',
+        etymology:'月 originally looked like a crescent moon. Because months were measured by the lunar cycle, it also means month. Used in 月亮 moon, 月份 month, and 岁月 years.',
+        strokeTip:'Write 月 in 4 strokes: left side down, top-right corner turning down, first inner horizontal, then second inner horizontal. Both inner strokes touch the right side but not the left!'
+      },
+      {
+        char:'山', pinyin:'shān', meaning:'mountain',
+        intro:'This character looks like what it means. What landscape does it describe?',
+        question:'The character 山 — what does it mean?',
+        options:['mountain','river','earth'],
+        related:[{char:'山',py:'shān',en:'mountain'},{char:'川',py:'chuān',en:'river'},{char:'土',py:'tǔ',en:'earth'}],
+        correctSpeech:'Correct! 山, pronounced shān, means mountain. Three peaks rising up — exactly how ancient people drew the mountains they saw.',
+        wrongGuide:'You chose {choice}, but 山 means MOUNTAIN. The three upward peaks are mountain summits. Compare 川 the river, with three downward flowing lines, and 土 earth, with a cross on a base.',
+        etymology:'山 is a direct pictograph of mountain peaks. Still looks like mountains today! Found in 火山 volcano, 山水 landscape, and 上山 to climb a mountain.',
+        strokeTip:'Write 山 in 3 strokes: middle peak first (tallest), then left peak, then right. The middle stroke is always taller than the sides!'
+      },
+      {
+        char:'水', pinyin:'shuǐ', meaning:'water',
+        intro:'Something flows in this character. What natural element is it?',
+        question:'The character 水 — what does it mean?',
+        options:['water','fire','wood'],
+        related:[{char:'水',py:'shuǐ',en:'water'},{char:'火',py:'huǒ',en:'fire'},{char:'木',py:'mù',en:'wood'}],
+        correctSpeech:'Excellent! 水, pronounced shuǐ, means water. The strokes flow like ripples spreading out from a central current.',
+        wrongGuide:'You chose {choice}, but 水 means WATER. The curving strokes represent rippling water. Compare 火 fire, with rising flames pointing upward, and 木 wood, a tree with roots going down.',
+        etymology:'水 originally showed a flowing river with droplets beside it. One of the five classical elements. Found in 水果 fruit, 洪水 flood, and 饮水 drinking water.',
+        strokeTip:'Write 水 in 4 strokes: centre vertical with a hook, then left upper, left lower, right upper, right lower. Think of ripples spreading from the middle outward.'
+      },
+      {
+        char:'大', pinyin:'dà', meaning:'big / great',
+        intro:'This character is a person with a special pose. What idea does it show?',
+        question:'The character 大 — what does it mean?',
+        options:['big / great','person','sky'],
+        related:[{char:'大',py:'dà',en:'big/great'},{char:'人',py:'rén',en:'person'},{char:'天',py:'tiān',en:'sky'}],
+        correctSpeech:'Wonderful! 大, pronounced dà, means big or great. A person standing with arms spread wide — showing the full size of a human, which is BIG!',
+        wrongGuide:'You chose {choice}, but 大 means BIG or GREAT. It is a person, 人, with arms stretched out horizontally showing size. Compare 天 sky, which adds a stroke on top of 大 — the sky above the person.',
+        etymology:'大 is a person standing with arms spread wide, showing scale and greatness. Used in 大学 university, 大人 adult, and 伟大 magnificent.',
+        strokeTip:'Write 大 in 3 strokes: horizontal arm stroke first, then left-falling leg, then right-falling leg. The horizontal arm is the key stroke that makes it different from 人!'
+      },
+      {
+        char:'木', pinyin:'mù', meaning:'wood / tree',
+        intro:'This looks like something that grows in nature. Can you guess what?',
+        question:'The character 木 — what does it mean?',
+        options:['wood / tree','earth','forest'],
+        related:[{char:'木',py:'mù',en:'wood/tree'},{char:'土',py:'tǔ',en:'earth'},{char:'林',py:'lín',en:'forest'}],
+        correctSpeech:'Great! 木, pronounced mù, means wood or tree. The vertical trunk, the horizontal branch, and the roots spreading below — a perfect picture of a tree!',
+        wrongGuide:'You chose {choice}, but 木 means WOOD or TREE. It shows a tree: vertical trunk going up and down, horizontal branch in the middle. Doubling it gives 林 forest. Compare 土 earth, which has a cross on a flat base.',
+        etymology:'木 is a pictograph of a tree with roots and branches. The foundation of many characters: 桌 table, 椅 chair, 树 tree. Two 木 together make 林 forest; three make 森 dense forest.',
+        strokeTip:'Write 木 in 4 strokes: horizontal branch first, then vertical trunk through the middle, then left root going down-left, then right root going down-right. Roots go below the horizontal!'
+      },
+      {
+        char:'火', pinyin:'huǒ', meaning:'fire',
+        intro:'This character looks like it is leaping upward. What force of nature is it?',
+        question:'The character 火 — what does it mean?',
+        options:['fire','water','wind'],
+        related:[{char:'火',py:'huǒ',en:'fire'},{char:'水',py:'shuǐ',en:'water'},{char:'风',py:'fēng',en:'wind'}],
+        correctSpeech:'Excellent! 火, pronounced huǒ, means fire. The strokes leap upward like dancing flames — one of the most vivid pictographs in Chinese.',
+        wrongGuide:'You chose {choice}, but 火 means FIRE. The upward-leaping strokes show flames rising. Compare 水 water, which has flowing curved strokes spreading outward, and 风 wind, which has a sweeping open shape.',
+        etymology:'火 is a pictograph of flames leaping upward. One of the five classical elements alongside water, wood, metal, and earth. Found in 火山 volcano, 火车 train, and 火锅 hot pot.',
+        strokeTip:'Write 火 in 4 strokes: a left-falling stroke, a right-falling dot, then a left-falling stroke, then a right-sweeping stroke. The strokes lean outward like real flames!'
+      },
+      {
+        char:'土', pinyin:'tǔ', meaning:'earth / soil',
+        intro:'A simple but important character. It shows something beneath your feet.',
+        question:'The character 土 — what does it mean?',
+        options:['earth / soil','stone','field'],
+        related:[{char:'土',py:'tǔ',en:'earth/soil'},{char:'石',py:'shí',en:'stone'},{char:'田',py:'tián',en:'field'}],
+        correctSpeech:'Correct! 土, pronounced tǔ, means earth or soil. A cross planted in the ground — a plant or post rooted in the earth.',
+        wrongGuide:'You chose {choice}, but 土 means EARTH or SOIL. It shows a vertical post standing on a horizontal ground line, rooted in earth. Compare 石 stone, which has a cliff radical on top, and 田 field, which looks like a divided plot of farmland.',
+        etymology:'土 shows something rooted in the ground — originally a clod of earth or a planted stake. One of the five classical elements. Used in 土地 land, 泥土 mud, 本土 native land, and 土豆 potato.',
+        strokeTip:'Write 土 in 3 strokes: short horizontal top, vertical stroke downward, then long horizontal base. The base stroke is longer than the top — this is what separates 土 from 士 which has the proportions reversed!'
+      }
+    ]
   },
-  {
-    char:'入',pinyin:'rù',meaning:'to enter',
-    intro:'Here is a new character. Look at those two strokes.',
-    question:'The character 入 — what does it mean?',
-    options:['to enter','person','eight'],
-    related:[{char:'入',py:'rù',en:'to enter'},{char:'人',py:'rén',en:'person'},{char:'八',py:'bā',en:'eight'}],
-    correctSpeech:'Well done! 入, pronounced rù, means to enter. Those two strokes meet at the top like a wedge going in — entering something.',
-    wrongGuide:'You chose {choice}, but 入, pronounced rù, means TO ENTER. The right stroke is longer than the left, and they meet at the top like an arrow going inward. Compare with 人 meaning person, where both strokes spread evenly, and 八 meaning eight, where the strokes lean away from each other.',
-    etymology:'入 is a pictograph of an arrow pointing downward into a space — the act of entering. It appears in 进入 meaning to go into, 入口 meaning entrance, and 收入 meaning income.',
-    strokeTip:'Write 入 in 2 strokes: first a short left-falling stroke, then a longer right-falling stroke that extends further. The right stroke must always be longer than the left!'
+
+  /* ─────────── PRE-INTERMEDIATE ─────────── */
+  preint: {
+    label: 'Pre-Intermediate',
+    pillLabel: 'ChinesePod · Pre-Intermediate',
+    data: [
+      {
+        char:'时', pinyin:'shí', meaning:'time',
+        intro:'Look for a familiar radical hiding on the left side of this character.',
+        question:'The character 时 — what does it mean?',
+        options:['time','day','year'],
+        related:[{char:'时',py:'shí',en:'time'},{char:'天',py:'tiān',en:'day/sky'},{char:'年',py:'nián',en:'year'}],
+        correctSpeech:'Great job! 时, pronounced shí, means time. The sun radical on the left tells you this character is about measuring the hours.',
+        wrongGuide:'You chose {choice}, but 时 means TIME. The sun radical 日 on the left is the key — ancient people used the sun to tell time. Compare 天 day or sky, showing a person under the vast sky, and 年 year, containing grain suggesting a harvest cycle.',
+        etymology:'时 combines 日 the sun on the left with 寺 temple on the right. Ancient temples used sundials — the shadow marked each hour. Used in 时间 time and 时候 moment.',
+        strokeTip:'Always write the sun radical 日 on the left first, then the right component. Left radicals always come before right components — this is a universal rule!'
+      },
+      {
+        char:'路', pinyin:'lù', meaning:'road / way',
+        intro:'Find the radical that tells you what this character is about.',
+        question:'The character 路 — what does it mean?',
+        options:['road / way','bridge','mountain'],
+        related:[{char:'路',py:'lù',en:'road/way'},{char:'桥',py:'qiáo',en:'bridge'},{char:'山',py:'shān',en:'mountain'}],
+        correctSpeech:'Correct! 路, pronounced lù, means road or way. The foot radical on the left shows roads are made for feet.',
+        wrongGuide:'You chose {choice}, but 路 means ROAD or WAY. Look for the foot radical 足 on the left — roads are built for feet. Compare 桥 bridge, which has the wood radical, and 山 mountain, showing three rising peaks.',
+        etymology:'路 has the foot radical 足 showing movement, and 各 meaning each — the road reaches everywhere. Used in 道路 road, 路上 on the way, and 出路 a way out.',
+        strokeTip:'Write the foot radical 足 first, all 7 strokes, then the right component 各. Always left before right, top before bottom!'
+      },
+      {
+        char:'明', pinyin:'míng', meaning:'bright / clear',
+        intro:'This character is made from two powerful symbols combined. What could they mean together?',
+        question:'The character 明 — what does it mean?',
+        options:['bright / clear','night','lamp'],
+        related:[{char:'明',py:'míng',en:'bright/clear'},{char:'夜',py:'yè',en:'night'},{char:'灯',py:'dēng',en:'lamp'}],
+        correctSpeech:'Excellent! 明, pronounced míng, means bright or clear. Sun plus moon combined — together they represent the greatest sources of light!',
+        wrongGuide:'You chose {choice}, but 明 means BRIGHT or CLEAR. The left side is 日 the sun, and the right side is 月 the moon — the two brightest things in the sky combined to mean brightness.',
+        etymology:'明 cleverly combines 日 sun and 月 moon. When both luminaries shine together, the world is at its brightest. Used in 明天 tomorrow, 明白 to understand, and 聪明 intelligent.',
+        strokeTip:'Write the sun 日 on the left first (4 strokes), then the moon 月 on the right (4 strokes). Left-right compound characters always follow left-first order!'
+      },
+      {
+        char:'休', pinyin:'xiū', meaning:'to rest',
+        intro:'A person and something natural. What might they be doing together?',
+        question:'The character 休 — what does it mean?',
+        options:['to rest','to work','to walk'],
+        related:[{char:'休',py:'xiū',en:'to rest'},{char:'工',py:'gōng',en:'to work'},{char:'走',py:'zǒu',en:'to walk'}],
+        correctSpeech:'Wonderful! 休, pronounced xiū, means to rest. A person leaning against a tree — the perfect image of taking a break in the shade!',
+        wrongGuide:'You chose {choice}, but 休 means TO REST. The person radical 亻 on the left leans against 木 a tree on the right — someone resting under a tree. Compare 工 to work, and 走 to walk which both suggest movement.',
+        etymology:'休 is a beautiful pictograph story: the person radical leans on a tree for shade and rest. Used in 休息 to rest, 休假 to take a holiday, and 暑休 summer break.',
+        strokeTip:'Write the person radical 亻 first (2 strokes on the left), then 木 the tree (4 strokes on the right). The person radical leans left to give space to what comes after it!'
+      },
+      {
+        char:'看', pinyin:'kàn', meaning:'to look / to watch',
+        intro:'This character has a hand at the top doing something with the eyes below.',
+        question:'The character 看 — what does it mean?',
+        options:['to look / to watch','to listen','to touch'],
+        related:[{char:'看',py:'kàn',en:'to look/watch'},{char:'听',py:'tīng',en:'to listen'},{char:'摸',py:'mō',en:'to touch'}],
+        correctSpeech:'Correct! 看, pronounced kàn, means to look or to watch. A hand shielding the eyes from the sun — the ancient gesture for looking into the distance!',
+        wrongGuide:'You chose {choice}, but 看 means TO LOOK or TO WATCH. The top component is a hand 手 shading the eyes 目 below, like shielding your vision from bright light to see far. Compare 听 to listen which has an ear radical.',
+        etymology:'看 shows a hand above an eye — the gesture of gazing into the distance with your hand shading your brow. Used in 看书 to read, 看电视 to watch TV, and 看望 to visit someone.',
+        strokeTip:'Write the hand component on top first (going left to right), then the eye 目 below it. Top-before-bottom is the rule for vertically stacked characters!'
+      },
+      {
+        char:'好', pinyin:'hǎo', meaning:'good / fine',
+        intro:'Two important radicals together create a very positive meaning.',
+        question:'The character 好 — what does it mean?',
+        options:['good / fine','love','family'],
+        related:[{char:'好',py:'hǎo',en:'good/fine'},{char:'爱',py:'ài',en:'love'},{char:'家',py:'jiā',en:'family'}],
+        correctSpeech:'Excellent! 好, pronounced hǎo, means good or fine. A woman and a child together — in ancient China, the highest image of goodness and wellbeing.',
+        wrongGuide:'You chose {choice}, but 好 means GOOD or FINE. The left side is 女 woman, the right side is 子 child. Together they represented the greatest good — a mother with her child. Compare 爱 love and 家 family.',
+        etymology:'好 combines 女 woman and 子 child. This image of mother and child was the ancient Chinese ideal of happiness and goodness. Now the most common word for good. Used in 你好 hello, 好吃 delicious, and 好看 good-looking.',
+        strokeTip:'Write 女 the woman radical on the left first, then 子 the child on the right. The woman radical leans inward — its final stroke goes underneath to support what follows!'
+      },
+      {
+        char:'话', pinyin:'huà', meaning:'speech / words',
+        intro:'The radical on the left is a clue. What category does this character belong to?',
+        question:'The character 话 — what does it mean?',
+        options:['speech / words','letter','book'],
+        related:[{char:'话',py:'huà',en:'speech/words'},{char:'信',py:'xìn',en:'letter'},{char:'书',py:'shū',en:'book'}],
+        correctSpeech:'Great! 话, pronounced huà, means speech or words. The speech radical on the left tells you immediately this character is about communication.',
+        wrongGuide:'You chose {choice}, but 话 means SPEECH or WORDS. The speech radical 讠on the left is a simplified version of 言 meaning to speak — any character with this radical relates to language or communication.',
+        etymology:'话 has the speech radical 讠on the left showing communication, paired with 舌 tongue on the right — tongue plus speech equals words! Used in 说话 to speak, 电话 telephone, and 笑话 joke.',
+        strokeTip:'The speech radical 讠is written first: a dot then a curved stroke. Then write the right component. Simplified characters use 讠instead of the full 言.'
+      },
+      {
+        char:'国', pinyin:'guó', meaning:'country / nation',
+        intro:'Something is enclosed in this character. What does the boundary represent?',
+        question:'The character 国 — what does it mean?',
+        options:['country / nation','city','home'],
+        related:[{char:'国',py:'guó',en:'country/nation'},{char:'城',py:'chéng',en:'city'},{char:'家',py:'jiā',en:'home'}],
+        correctSpeech:'Correct! 国, pronounced guó, means country or nation. The outer border is the territory, and inside is 玉 jade — a precious symbol of the land and its culture.',
+        wrongGuide:'You chose {choice}, but 国 means COUNTRY or NATION. The outer square represents a border or territory — everything inside belongs to the nation. Compare 城 city and 家 home, which are smaller in scale.',
+        etymology:'国 shows a border enclosing 玉 jade, representing the precious territory of a nation. Used in 中国 China, 国家 nation-state, 国王 king, and 外国 foreign country.',
+        strokeTip:'Write the outer enclosure first: left side, top and right corner, bottom right corner. Then write what is inside. Then close the bottom last. Enclosures are always completed last!'
+      },
+      {
+        char:'学', pinyin:'xué', meaning:'to study / to learn',
+        intro:'This character is at the heart of every student\'s life. What does it represent?',
+        question:'The character 学 — what does it mean?',
+        options:['to study / to learn','to teach','school'],
+        related:[{char:'学',py:'xué',en:'to study/learn'},{char:'教',py:'jiào',en:'to teach'},{char:'校',py:'xiào',en:'school'}],
+        correctSpeech:'Wonderful! 学, pronounced xué, means to study or to learn. The top component shows hands holding something, and the bottom is a child — a child receiving knowledge passed down by hands.',
+        wrongGuide:'You chose {choice}, but 学 means TO STUDY or TO LEARN. The top shows two hands passing knowledge downward, and 子 child sits at the bottom receiving it. Compare 教 to teach, where the teacher holds a stick, and 校 school, which has the wood radical for a building.',
+        etymology:'学 shows hands above transferring knowledge to 子 child below — the fundamental image of learning. Used in 学生 student, 学习 to study, 大学 university, and 学问 knowledge and scholarship.',
+        strokeTip:'Write the top components first (left cluster, right cluster), then the horizontal stroke across the middle, then 子 the child at the bottom. Top-to-bottom order is essential!'
+      },
+      {
+        char:'心', pinyin:'xīn', meaning:'heart / mind',
+        intro:'This character is the root of all feelings in Chinese. What does it represent?',
+        question:'The character 心 — what does it mean?',
+        options:['heart / mind','body','soul'],
+        related:[{char:'心',py:'xīn',en:'heart/mind'},{char:'身',py:'shēn',en:'body'},{char:'魂',py:'hún',en:'soul'}],
+        correctSpeech:'Excellent! 心, pronounced xīn, means heart or mind. The three dots and curved base show the chambers of the heart — the emotional and intellectual centre of a person.',
+        wrongGuide:'You chose {choice}, but 心 means HEART or MIND. The curved shape with three dots represents the physical heart and its chambers. In Chinese thought, the heart is also where the mind lives. Compare 身 body and 魂 soul.',
+        etymology:'心 is a pictograph of the human heart with its chambers and vessels. Because ancient Chinese believed the heart was the seat of thought and emotion, 心 means both heart and mind. Found in 开心 happy, 小心 careful, 心情 mood, and 放心 to feel relieved.',
+        strokeTip:'Write 心 in 4 strokes: left dot, then the curved body sweeping right, then centre dot, then right dot. The curve goes left first then sweeps right — like the shape of a real heart!'
+      }
+    ]
   },
-  {
-    char:'下',pinyin:'xià',meaning:'down / next',
-    intro:'This character shows direction. Can you guess which one?',
-    question:'The character 下 — what does it mean?',
-    options:['down / next','up','middle'],
-    related:[{char:'下',py:'xià',en:'down/next'},{char:'上',py:'shàng',en:'up'},{char:'中',py:'zhōng',en:'middle'}],
-    correctSpeech:'Correct! 下, pronounced xià, means down or next. The small mark hangs below the line — pointing downward.',
-    wrongGuide:'You chose {choice}, but 下, pronounced xià, means DOWN or NEXT. See the small mark — it is below the horizontal line, pointing downward. Now compare with 上, meaning up, where the mark is above the line. And 中, meaning middle, has a vertical line through the centre of a box.',
-    etymology:'下 shows a reference line with a mark placed below it, indicating downward direction. It is the direct mirror of 上, meaning up. It also means next, as in 下次 meaning next time.',
-    strokeTip:'Write 下 in 3 strokes: horizontal line first, then a vertical stroke downward from the centre, then a small dot to the lower right. The dot falls below the horizontal!'
-  },
-  {
-    char:'见',pinyin:'jiàn',meaning:'to meet / to see',
-    intro:'This character combines two ideas into one. Study it closely.',
-    question:'The character 见 — what does it mean?',
-    options:['to meet / to see','to walk','to hear'],
-    related:[{char:'见',py:'jiàn',en:'to meet/see'},{char:'走',py:'zǒu',en:'to walk'},{char:'听',py:'tīng',en:'to hear'}],
-    correctSpeech:'Excellent! 见, pronounced jiàn, means to meet or to see. An eye on top of walking legs — you go out and see people!',
-    wrongGuide:'You chose {choice}, but 见, pronounced jiàn, means TO MEET or TO SEE. It shows an eye sitting on two walking legs — ancient Chinese imagined seeing as active, you walk out to meet the world. Compare 走, meaning to walk, which has a footstep at the bottom, and 听, meaning to hear, which has an ear radical on the left.',
-    etymology:'见 is a pictograph of an eye on two legs. Ancient Chinese thought of seeing as going out to encounter things. Used in 见面 meaning to meet face to face, 看见 meaning to see, and 意见 meaning opinion.',
-    strokeTip:'Write 见 in 4 strokes: short horizontal, then vertical with a hook, then left-falling stroke, then a final sweeping stroke. The hook on the second stroke is essential!'
-  },
-  {
-    char:'去',pinyin:'qù',meaning:'to go',
-    intro:'Movement is built into this character. Which direction?',
-    question:'The character 去 — what does it mean?',
-    options:['to go','to come','to stay'],
-    related:[{char:'去',py:'qù',en:'to go'},{char:'来',py:'lái',en:'to come'},{char:'在',py:'zài',en:'to stay'}],
-    correctSpeech:'Perfect! 去, pronounced qù, means to go — movement away from you. Its exact opposite is 来, meaning to come.',
-    wrongGuide:'You chose {choice}, but 去, pronounced qù, means TO GO — movement away. Its opposite is 来, pronounced lái, meaning to come — movement toward you. And 在, pronounced zài, means to be staying at a location. Remember: 去 has an enclosure at the bottom that the person is escaping from!',
-    etymology:'去 originally depicted a person leaving a dwelling. The top part is the person, the bottom enclosure is the place they are leaving. Used in 去年 meaning last year, 出去 meaning to go out, and 过去 meaning the past.',
-    strokeTip:'Write 去 in 5 strokes. The top part is like 土 — horizontal, short vertical, then horizontal again. Then add the left and right sides of the enclosure and close the bottom.'
-  },
-  {
-    char:'时',pinyin:'shí',meaning:'time',
-    intro:'Look for a familiar radical hiding on the left side.',
-    question:'The character 时 — what does it mean?',
-    options:['time','day','year'],
-    related:[{char:'时',py:'shí',en:'time'},{char:'天',py:'tiān',en:'day/sky'},{char:'年',py:'nián',en:'year'}],
-    correctSpeech:'Great job! 时, pronounced shí, means time. The sun radical on the left tells you this character is about measuring the hours.',
-    wrongGuide:'You chose {choice}, but 时, pronounced shí, means TIME. The key is the sun radical 日 on the left side — ancient people used the sun to tell time. Compare 天, meaning day or sky, which shows a person under the vast sky, and 年, meaning year, which contains grain stalks suggesting a harvest cycle.',
-    etymology:'时 combines 日, the sun, on the left with 寺, meaning temple, on the right. Ancient temples used sundials — the shadow on the temple floor marked each hour. Used in 时间 meaning time, and 时候 meaning moment.',
-    strokeTip:'Always write the sun radical 日 on the left first, then the right component. In compound characters, left radicals always come before right components — this is a universal rule in Chinese writing!'
-  },
-  {
-    char:'路',pinyin:'lù',meaning:'road / way',
-    intro:'Find the radical that tells you what this character is about.',
-    question:'The character 路 — what does it mean?',
-    options:['road / way','bridge','mountain'],
-    related:[{char:'路',py:'lù',en:'road/way'},{char:'桥',py:'qiáo',en:'bridge'},{char:'山',py:'shān',en:'mountain'}],
-    correctSpeech:'Correct! 路, pronounced lù, means road or way. The foot radical on the left shows that roads are made for feet to walk on.',
-    wrongGuide:'You chose {choice}, but 路, pronounced lù, means ROAD or WAY. Look for the foot radical 足 on the left side — roads are built for feet. Compare 桥, meaning bridge, which has the wood radical because bridges were made of wood, and 山, meaning mountain, which looks like three mountain peaks rising up.',
-    etymology:'路 has the foot radical 足 on the left, showing movement, and 各 on the right meaning each or every — the road reaches everywhere for everyone. Used in 道路 meaning road, 路上 meaning on the way, and 出路 meaning a way out.',
-    strokeTip:'Write the foot radical 足 on the left first, all 7 strokes of it, then write the right component 各. The rule is always left before right, top before bottom in Chinese characters!'
-  },
-  {
-    char:'人',pinyin:'rén',meaning:'person',
-    intro:'This is one of the most ancient Chinese pictographs. What do you see?',
-    question:'The character 人 — what does it mean?',
-    options:['person','to enter','big'],
-    related:[{char:'人',py:'rén',en:'person'},{char:'入',py:'rù',en:'to enter'},{char:'大',py:'dà',en:'big'}],
-    correctSpeech:'Wonderful! 人, pronounced rén, means person. Two balanced strokes — a human figure seen from the side, walking forward.',
-    wrongGuide:'You chose {choice}, but 人, pronounced rén, means PERSON. Both strokes spread evenly like legs walking. Compare 入, meaning to enter, where the right stroke is longer and strokes meet at the top like a wedge. And 大, meaning big, adds a horizontal arm stroke across the person with arms spread wide to show bigness!',
-    etymology:'人 is one of the oldest pictographs in Chinese — a person seen in profile, leaning slightly forward. The left stroke is the body and one leg, the right stroke is the other leg. It appears in 人口 meaning population, 大人 meaning adult, and 工人 meaning worker.',
-    strokeTip:'Write 人 in just 2 strokes: left-falling stroke first from the top, then right-falling stroke starting slightly to the right. This is one of the most fundamental characters — master it and you will see it everywhere!'
+
+  /* ─────────── UPPER INTERMEDIATE ─────────── */
+  upper: {
+    label: 'Upper Intermediate',
+    pillLabel: 'ChinesePod · Upper Intermediate',
+    data: [
+      {
+        char:'情', pinyin:'qíng', meaning:'feeling / emotion',
+        intro:'The radical on the left belongs to a very personal category. What is this character about?',
+        question:'The character 情 — what does it mean?',
+        options:['feeling / emotion','thought','desire'],
+        related:[{char:'情',py:'qíng',en:'feeling/emotion'},{char:'想',py:'xiǎng',en:'thought'},{char:'欲',py:'yù',en:'desire'}],
+        correctSpeech:'Excellent! 情, pronounced qíng, means feeling or emotion. The heart radical on the left combined with the right component creates the idea of inner emotional color.',
+        wrongGuide:'You chose {choice}, but 情 means FEELING or EMOTION. The vertical heart radical 忄on the left is the key — any character with this radical deals with inner states, emotions, or psychology.',
+        etymology:'情 combines the heart radical 忄with 青 meaning blue-green or pure. Pure feelings from the heart. Used in 感情 feeling, 热情 enthusiasm, 爱情 romantic love, and 表情 expression.',
+        strokeTip:'Write the heart radical 忄first: left dot, right dot, then the vertical stroke with a hook. The heart radical in its vertical form has 3 strokes — compact but essential!'
+      },
+      {
+        char:'懂', pinyin:'dǒng', meaning:'to understand',
+        intro:'Look at the left side — it tells you this is an internal, cognitive experience.',
+        question:'The character 懂 — what does it mean?',
+        options:['to understand','to know','to think'],
+        related:[{char:'懂',py:'dǒng',en:'to understand'},{char:'知',py:'zhī',en:'to know'},{char:'思',py:'sī',en:'to think'}],
+        correctSpeech:'Well done! 懂, pronounced dǒng, means to understand. The heart radical shows understanding is not just mental — it must be felt to be truly grasped.',
+        wrongGuide:'You chose {choice}, but 懂 means TO UNDERSTAND. The heart radical 忄on the left shows that real understanding involves the heart. Compare 知 to know, which is more factual and uses an arrow radical, and 思 to think, which has a full heart 心 at the bottom.',
+        etymology:'懂 uses the heart radical to show that understanding goes beyond cognition — it is felt. The right component adds the phonetic element. Used in 听懂 to understand by listening, 看懂 to understand by reading, and 不懂 to not understand.',
+        strokeTip:'The heart radical 忄(3 strokes) comes first, then the complex right component. For complex characters, identify the radical first and write it before everything else!'
+      },
+      {
+        char:'难', pinyin:'nán', meaning:'difficult / hard',
+        intro:'This character has a bird element and an opposing force. What abstract idea does it convey?',
+        question:'The character 难 — what does it mean?',
+        options:['difficult / hard','impossible','dangerous'],
+        related:[{char:'难',py:'nán',en:'difficult/hard'},{char:'不可能',py:'bùkěnéng',en:'impossible'},{char:'危险',py:'wēixiǎn',en:'dangerous'}],
+        correctSpeech:'Correct! 难, pronounced nán, means difficult or hard. The bird radical struggles — even a bird straining to fly captures the idea of difficulty beautifully.',
+        wrongGuide:'You chose {choice}, but 难 means DIFFICULT or HARD. The right side contains a bird radical 隹, and the left component creates tension — a bird struggling in adverse conditions. This image of struggle became the concept of difficulty.',
+        etymology:'难 contains 隹 a short-tailed bird on the right, historically shown as a bird caught or struggling. Used in 困难 difficulty, 难过 sad/hard to bear, 难看 ugly, and 难以 hard to.',
+        strokeTip:'Write the left component first, then the bird radical 隹 on the right. The bird radical has many strokes — count carefully: horizontal strokes are the feathers!'
+      },
+      {
+        char:'机', pinyin:'jī', meaning:'machine / opportunity',
+        intro:'This character has two quite different meanings. Which one is correct?',
+        question:'The character 机 — what does it mean?',
+        options:['machine / opportunity','computer','airplane'],
+        related:[{char:'机',py:'jī',en:'machine/opportunity'},{char:'电脑',py:'diànnǎo',en:'computer'},{char:'飞机',py:'fēijī',en:'airplane'}],
+        correctSpeech:'Great! 机, pronounced jī, means machine and also opportunity — a beautiful dual meaning. The wood radical shows the original meaning was a wooden loom mechanism.',
+        wrongGuide:'You chose {choice}, but 机 means MACHINE or OPPORTUNITY. Note that 电脑 computer and 飞机 airplane both contain 机 — it is a component, not the full word. The wood radical 木 on the left shows its origin as a mechanical loom.',
+        etymology:'机 originally meant the trigger mechanism of a crossbow or the moving parts of a wooden loom — where opportunity and precision meet. Now used in 手机 mobile phone, 机会 opportunity, 飞机 airplane, and 机器 machine.',
+        strokeTip:'Write the wood radical 木 on the left first (4 strokes), then the right component 几. The wood radical shrinks slightly when it is on the left side to make room!'
+      },
+      {
+        char:'影', pinyin:'yǐng', meaning:'shadow / image',
+        intro:'This character carries both a visual and a philosophical weight. What does it represent?',
+        question:'The character 影 — what does it mean?',
+        options:['shadow / image','light','reflection'],
+        related:[{char:'影',py:'yǐng',en:'shadow/image'},{char:'光',py:'guāng',en:'light'},{char:'镜',py:'jìng',en:'reflection/mirror'}],
+        correctSpeech:'Wonderful! 影, pronounced yǐng, means shadow or image. Three short strokes on the right represent rays cast to the side — the form of light creating a shadow.',
+        wrongGuide:'You chose {choice}, but 影 means SHADOW or IMAGE. The right side has three short strokes 彡 representing rays of light or texture. The left component is the object casting the shadow. Compare 光 light and 镜 mirror.',
+        etymology:'影 beautifully captures both the shadow and the image it creates. Used in 电影 movie (electric image), 影响 influence (shadow reaching out), 摄影 photography, and 身影 silhouette.',
+        strokeTip:'Write the main left component first, then the three short strokes 彡 on the right. The three strokes of 彡 go from top to bottom, each slightly longer than the previous!'
+      },
+      {
+        char:'虽', pinyin:'suī', meaning:'although / even though',
+        intro:'This is a conjunction — a grammar word. It connects contrasting ideas.',
+        question:'The character 虽 — what does it mean?',
+        options:['although / even though','because','therefore'],
+        related:[{char:'虽',py:'suī',en:'although/even though'},{char:'因为',py:'yīnwèi',en:'because'},{char:'所以',py:'suǒyǐ',en:'therefore'}],
+        correctSpeech:'Correct! 虽, pronounced suī, means although or even though. It sets up a concession before introducing a contrasting point — essential for nuanced Chinese.',
+        wrongGuide:'You chose {choice}, but 虽 means ALTHOUGH or EVEN THOUGH. It always introduces a concession: 虽然...但是 although...but. Compare 因为 because, which introduces a cause, and 所以 therefore, which introduces a result.',
+        etymology:'虽 was originally associated with a type of lizard or insect, but the meaning evolved to express concession. Now entirely grammatical. Almost always followed by 然 to form 虽然. Used in 虽然很难，但是可以 although it is difficult, it is possible.',
+        strokeTip:'虽 has the insect radical 虫 on the bottom — 6 strokes. Write top component first, then the insect radical below. Knowing the radical helps you locate the character in dictionaries!'
+      },
+      {
+        char:'矛', pinyin:'máo', meaning:'spear / contradiction',
+        intro:'This character is an ancient weapon and also names a famous paradox. What is it?',
+        question:'The character 矛 — what does it mean?',
+        options:['spear / contradiction','sword','shield'],
+        related:[{char:'矛',py:'máo',en:'spear/contradiction'},{char:'剑',py:'jiàn',en:'sword'},{char:'盾',py:'dùn',en:'shield'}],
+        correctSpeech:'Excellent! 矛, pronounced máo, means spear. Together with 盾 shield, it forms the word 矛盾 contradiction — from the paradox of a spear that can pierce anything, and a shield that blocks everything!',
+        wrongGuide:'You chose {choice}, but 矛 means SPEAR. 矛 and 盾 shield are the two halves of the famous Chinese paradox. Note that 剑 is a sword — different weapon. When 矛 and 盾 combine, they form 矛盾 contradiction, one of the most elegant compound words in Chinese.',
+        etymology:'矛 is a pictograph of a spear with a pointed head and binding. The famous paradox (矛盾 máodùn): a merchant claimed his spear could pierce any shield, and his shield could block any spear. If true, what happens when the spear meets the shield? Contradiction!',
+        strokeTip:'Write 矛 in 5 strokes. The top is a short horizontal, then diagonal strokes for the spear head, then a longer vertical, finishing with two hook-like strokes. Visualize the weapon as you write it!'
+      },
+      {
+        char:'缘', pinyin:'yuán', meaning:'fate / reason / connection',
+        intro:'This character is about invisible forces that connect people and things. What is the concept?',
+        question:'The character 缘 — what does it mean?',
+        options:['fate / reason / connection','marriage','luck'],
+        related:[{char:'缘',py:'yuán',en:'fate/reason/connection'},{char:'婚姻',py:'hūnyīn',en:'marriage'},{char:'运气',py:'yùnqì',en:'luck'}],
+        correctSpeech:'Wonderful! 缘, pronounced yuán, means fate, reason, or connection. The silk radical shows how lives are threaded together by invisible bonds — like silk threads weaving a pattern.',
+        wrongGuide:'You chose {choice}, but 缘 means FATE, REASON, or CONNECTION. The silk radical 纟on the left represents threads — the invisible threads of destiny that connect people. Compare 婚姻 marriage and 运气 luck, which are related ideas but distinct concepts.',
+        etymology:'缘 has the silk radical 纟showing interconnection, with a complex right component suggesting edges or borders. The silk threads of fate bind people together. Used in 缘分 fate/destiny between people, 无缘无故 for no reason, and 有缘 connected by fate.',
+        strokeTip:'The silk radical 纟is written first: 3 strokes that curve and spiral, then pull right. This radical always appears with meanings related to thread, connection, or fabric!'
+      },
+      {
+        char:'境', pinyin:'jìng', meaning:'boundary / environment / state',
+        intro:'This character describes the space around you or the limits that define a situation.',
+        question:'The character 境 — what does it mean?',
+        options:['boundary / environment / state','country','inside'],
+        related:[{char:'境',py:'jìng',en:'boundary/environment'},{char:'国',py:'guó',en:'country'},{char:'内',py:'nèi',en:'inside'}],
+        correctSpeech:'Correct! 境, pronounced jìng, means boundary, environment, or state of being. The earth radical on the left grounds it — a defined territory of earth.',
+        wrongGuide:'You chose {choice}, but 境 means BOUNDARY, ENVIRONMENT, or STATE. The earth radical 土 on the left shows it relates to physical territory or grounded conditions. Compare 国 country, which is an enclosed territory, and 内 inside, which shows being within a boundary.',
+        etymology:'境 combines the earth radical 土 with 竟 meaning to complete or reach the end — the edge of the earth, the final boundary. Used in 环境 environment, 境界 realm or level, 困境 difficult situation, and 出境 to leave a territory.',
+        strokeTip:'Write the earth radical 土 first on the left (3 strokes), then the complex right component 竟. For characters with earth radical on the left, the radical shrinks vertically to fit alongside the right component!'
+      },
+      {
+        char:'默', pinyin:'mò', meaning:'silent / tacit',
+        intro:'This character carries the weight of unspoken things. What does it mean?',
+        question:'The character 默 — what does it mean?',
+        options:['silent / tacit','dark','deep'],
+        related:[{char:'默',py:'mò',en:'silent/tacit'},{char:'暗',py:'àn',en:'dark'},{char:'深',py:'shēn',en:'deep'}],
+        correctSpeech:'Wonderful! 默, pronounced mò, means silent or tacit. A black dog — something lurking invisibly in darkness, unseen and unspoken.',
+        wrongGuide:'You chose {choice}, but 默 means SILENT or TACIT. The bottom component is 黑 black or dark, and the top is 黑 combined — the silence of deep darkness. Compare 暗 dark, which focuses on absence of light, and 深 deep, which relates to water depth.',
+        etymology:'默 has 黑 black at the bottom, evoking silent darkness. Used in 沉默 silence, 默默 quietly and without fuss, 默认 to tacitly agree or default setting, and 默契 unspoken understanding between people.',
+        strokeTip:'Write the top component first, then 黑 black at the bottom. 黑 itself is written: top part first (四 frame), then the fire dots at the bottom. Complex characters are built from top to bottom, component by component!'
+      }
+    ]
   }
-];
+};
 
-let order=[],idx=0,score=0,answered=false,results=[],hintTimer,lastSpeech='';
-const synth=window.speechSynthesis;
+/* ── STATE ── */
+let currentLevel = null;
+let DATA = [];
+let order = [], idx = 0, score = 0, answered = false, results = [], hintTimer, lastSpeech = '';
+const synth = window.speechSynthesis;
 
-// build intro chars
-const ic=document.getElementById('introChars');
-DATA.forEach((q,i)=>{
-  const d=document.createElement('div');d.className='ic';d.style.animationDelay=(i*.06)+'s';
-  d.innerHTML=`<span class="ic-c">${q.char}</span><span class="ic-p">${q.pinyin}</span><span class="ic-m">${q.meaning}</span>`;
-  ic.appendChild(d);
-});
-// cycle bg char
-let bgi=0; const bgChars=DATA.map(d=>d.char);
-setInterval(()=>{bgi=(bgi+1)%bgChars.length;document.getElementById('introBg').textContent=bgChars[bgi];},2000);
+/* ── LEVEL SELECT ── */
+const bgCharsAll = ['学','中','国','好','明','路','情','影','机'];
+let bgI = 0;
+setInterval(() => {
+  bgI = (bgI + 1) % bgCharsAll.length;
+  document.getElementById('levelBg').textContent = bgCharsAll[bgI];
+}, 2000);
 
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+function selectLevel(lv) {
+  currentLevel = lv;
+  DATA = LEVELS[lv].data;
+  const ldata = LEVELS[lv];
+
+  // Set intro pill
+  document.getElementById('introPillText').textContent = ldata.pillLabel;
+
+  // Set topbar level pill
+  document.getElementById('tbLevelPill').textContent = ldata.label;
+
+  // Build intro chars
+  const ic = document.getElementById('introChars');
+  ic.innerHTML = '';
+  DATA.forEach((q, i) => {
+    const d = document.createElement('div');
+    d.className = 'ic';
+    d.style.animationDelay = (i * .06) + 's';
+    d.innerHTML = `<span class="ic-c">${q.char}</span><span class="ic-p">${q.pinyin}</span><span class="ic-m">${q.meaning}</span>`;
+    ic.appendChild(d);
+  });
+
+  // Cycle intro bg
+  const bgChars = DATA.map(d => d.char);
+  let bgi = 0;
+  document.getElementById('introBg').textContent = bgChars[0];
+
+  show('s-intro');
+}
+
+/* ── UTILS ── */
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
+function shuffle(a) {
+  const b = [...a];
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = 0 | Math.random() * (i + 1);
+    [b[i], b[j]] = [b[j], b[i]];
+  }
+  return b;
+}
+function el(tag, cls) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  return e;
+}
 
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;}
-
-function startGame(){
+/* ── GAME FLOW ── */
+function startGame() {
   show('s-game');
-  order=shuffle([...Array(DATA.length).keys()]);
-  idx=0;score=0;results=[];
-  buildDots();loadQuestion();
+  order = shuffle([...Array(DATA.length).keys()]);
+  idx = 0; score = 0; results = [];
+  buildDots();
+  loadQuestion();
 }
 
-function buildDots(){
-  const w=document.getElementById('tbDots');w.innerHTML='';
-  DATA.forEach((_,i)=>{const d=document.createElement('div');d.className='tdot';d.id='td'+i;w.appendChild(d);});
+function buildDots() {
+  const w = document.getElementById('tbDots');
+  w.innerHTML = '';
+  DATA.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'tdot';
+    d.id = 'td' + i;
+    w.appendChild(d);
+  });
 }
 
-function loadQuestion(){
-  answered=false;clearTimeout(hintTimer);
-  const q=DATA[order[idx]];
-  document.getElementById('tbCnt').textContent=`${idx+1} / ${DATA.length}`;
-  document.getElementById('tbFill').style.width=(idx/DATA.length*100)+'%';
+function loadQuestion() {
+  answered = false;
+  clearTimeout(hintTimer);
+  const q = DATA[order[idx]];
+  document.getElementById('tbCnt').textContent = `${idx + 1} / ${DATA.length}`;
+  document.getElementById('tbFill').style.width = (idx / DATA.length * 100) + '%';
 
-  // Build stage
-  const stage=document.getElementById('stage');
-  stage.innerHTML='';
+  const stage = document.getElementById('stage');
+  stage.innerHTML = '';
 
-  // Question card
-  const qcard=el('div','q-card');
-  const charStage=el('div','char-stage');
-  const gridLines=el('div','char-grid-lines');
-  const theChar=el('div','the-char pop');
-  theChar.id='mainChar';theChar.textContent=q.char;
-  charStage.appendChild(gridLines);charStage.appendChild(theChar);
+  /* ── Question card ── */
+  const qcard = el('div', 'q-card');
 
-  const qtext=el('div','q-text');
-  qtext.id='qtext';
-  qtext.innerHTML=`<div class="q-speaking" id="speaking">🔊 Listen to the question<div class="wave"><span></span><span></span><span></span><span></span><span></span></div></div>`;
+  // Character display (grid box with the character — this is the ONLY place the char shows)
+  const charStage = el('div', 'char-stage');
+  const gridLines = el('div', 'char-grid-lines');
+  const theChar = el('div', 'the-char pop');
+  theChar.id = 'mainChar';
+  theChar.textContent = q.char;
+  charStage.appendChild(gridLines);
+  charStage.appendChild(theChar);
 
-  const hintPill=el('div','hint-pill');hintPill.id='hintPill';hintPill.textContent=q.intro;
+  const qtext = el('div', 'q-text');
+  qtext.id = 'qtext';
+  qtext.innerHTML = `<div class="q-speaking" id="speaking">🔊 Listening to question<div class="wave"><span></span><span></span><span></span><span></span><span></span></div></div>`;
 
-  qcard.appendChild(charStage);qcard.appendChild(qtext);qcard.appendChild(hintPill);
+  const hintPill = el('div', 'hint-pill');
+  hintPill.id = 'hintPill';
+  hintPill.textContent = q.intro;
+
+  qcard.appendChild(charStage);
+  qcard.appendChild(qtext);
+  qcard.appendChild(hintPill);
   stage.appendChild(qcard);
 
-  // Options (hidden initially)
-  const optsWrap=el('div','opts');optsWrap.id='optsWrap';optsWrap.style.display='none';
-  const labels=['A','B','C'];
-  const opts=shuffle(q.options);
-  opts.forEach((opt,i)=>{
-    const rel=q.related.find(r=>r.en===opt);
-    const ch=rel?rel.char:'·';
-    const btn=el('button','opt');
-    btn.innerHTML=`<div class="opt-num">${labels[i]}</div><div class="opt-char-sm">${ch}</div><div class="opt-label">${opt}</div><div class="opt-check">${opt===q.meaning?'✓':'✗'}</div>`;
-    btn.addEventListener('click',()=>pick(opt,btn,q));
+  /* ── Options — TEXT ONLY, no characters ── */
+  const optsWrap = el('div', 'opts');
+  optsWrap.id = 'optsWrap';
+  optsWrap.style.display = 'none';
+  const labels = ['A', 'B', 'C'];
+  const opts = shuffle(q.options);
+  opts.forEach((opt, i) => {
+    const btn = el('button', 'opt');
+    // NOTE: No opt-char-sm element. Just the letter badge + meaning text.
+    btn.innerHTML = `
+      <div class="opt-num">${labels[i]}</div>
+      <div style="flex:1">
+        <div class="opt-label">${opt}</div>
+      </div>
+      <div class="opt-check">${opt === q.meaning ? '✓' : '✗'}</div>
+    `;
+    btn.addEventListener('click', () => pick(opt, btn, q));
     optsWrap.appendChild(btn);
   });
   stage.appendChild(optsWrap);
 
-  // Speak question then show options
-  const speech=`${q.intro} ${q.question}`;
-  lastSpeech=speech;
-  speakThen(speech,()=>{
-    document.getElementById('qtext').innerHTML=`<strong style="font-size:17px">${q.question}</strong>`;
-    optsWrap.style.display='flex';optsWrap.style.flexDirection='column';
-    // show hint after delay
-    hintTimer=setTimeout(()=>document.getElementById('hintPill').classList.add('show'),8000);
+  // Speak then reveal options
+  const speech = `${q.intro} ${q.question}`;
+  lastSpeech = speech;
+  speakThen(speech, () => {
+    document.getElementById('qtext').innerHTML = `<strong style="font-size:18px;line-height:1.4">${q.question}</strong>`;
+    optsWrap.style.display = 'flex';
+    optsWrap.style.flexDirection = 'column';
+    hintTimer = setTimeout(() => document.getElementById('hintPill').classList.add('show'), 8000);
   });
 }
 
-function pick(choice,btn,q){
-  if(answered)return;answered=true;clearTimeout(hintTimer);
-  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
-  const ok=choice===q.meaning;
+function pick(choice, btn, q) {
+  if (answered) return;
+  answered = true;
+  clearTimeout(hintTimer);
+  document.querySelectorAll('.opt').forEach(b => b.disabled = true);
+  const ok = choice === q.meaning;
 
-  if(ok){
-    btn.className='opt s-correct';
-    document.getElementById('mainChar').className='the-char cheer';
-    document.getElementById('td'+idx).classList.add('ok');
-    score++;results.push({...q,ok:true});
-    playBeep(true);doConfetti();
+  if (ok) {
+    btn.className = 'opt s-correct';
+    document.getElementById('mainChar').className = 'the-char cheer';
+    document.getElementById('td' + idx).classList.add('ok');
+    score++;
+    results.push({ ...q, ok: true });
+    playBeep(true);
+    doConfetti();
     showCorrectFeedback(q);
-    const sp=q.correctSpeech;lastSpeech=sp;speak(sp);
+    lastSpeech = q.correctSpeech;
+    speak(q.correctSpeech);
   } else {
-    btn.className='opt s-wrong';
-    document.getElementById('mainChar').className='the-char shake';
-    document.getElementById('td'+idx).classList.add('bad');
-    results.push({...q,ok:false});
-    // highlight correct
-    document.querySelectorAll('.opt').forEach(b=>{
-      if(b.querySelector('.opt-label').textContent===q.meaning)b.className='opt s-reveal';
+    btn.className = 'opt s-wrong';
+    document.getElementById('mainChar').className = 'the-char shake';
+    document.getElementById('td' + idx).classList.add('bad');
+    results.push({ ...q, ok: false });
+    // Reveal correct option
+    document.querySelectorAll('.opt').forEach(b => {
+      const lbl = b.querySelector('.opt-label');
+      if (lbl && lbl.textContent === q.meaning) b.className = 'opt s-reveal';
     });
     playBeep(false);
-    showWrongGuide(q,choice);
-    const sp=q.wrongGuide.replace('{choice}',choice);lastSpeech=sp+' '+q.etymology+' '+q.strokeTip;
-    speak(sp+' '+q.etymology+' Here is a writing tip. '+q.strokeTip);
+    showWrongGuide(q, choice);
+    const sp = q.wrongGuide.replace('{choice}', choice);
+    lastSpeech = sp + ' ' + q.etymology + ' ' + q.strokeTip;
+    speak(sp + ' ' + q.etymology + ' Here is a writing tip. ' + q.strokeTip);
   }
 
   // Next button
-  const nb=el('button','btn-next');
-  nb.innerHTML='Next Character <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-  nb.onclick=nextQuestion;
+  const nb = el('button', 'btn-next');
+  nb.innerHTML = 'Next Character <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+  nb.onclick = nextQuestion;
   document.getElementById('stage').appendChild(nb);
 }
 
-function showCorrectFeedback(q){
-  const stage=document.getElementById('stage');
-  const banner=el('div','correct-banner');
-  banner.innerHTML=`<div class="cb-icon">✓</div><div><div class="cb-title">Correct! ${q.char} = ${q.meaning}</div><div class="cb-text">${q.etymology}</div></div>`;
+function showCorrectFeedback(q) {
+  const stage = document.getElementById('stage');
+  const banner = el('div', 'correct-banner');
+  // Show the character + pinyin here in the feedback banner (AFTER answering)
+  banner.innerHTML = `
+    <div class="cb-icon">✓</div>
+    <div style="flex:1">
+      <div class="cb-title">Correct! ${q.meaning}</div>
+      <div class="cb-text">${q.etymology.substring(0, 80)}...</div>
+    </div>
+    <div class="cb-char-reveal">
+      <div class="cb-char">${q.char}</div>
+      <div class="cb-char-info">
+        <div class="cb-py">${q.pinyin}</div>
+        <div class="cb-en">${q.meaning}</div>
+      </div>
+    </div>
+  `;
   stage.appendChild(banner);
 }
 
-function showWrongGuide(q,choice){
-  const stage=document.getElementById('stage');
-  const guide=el('div','guide');
+function showWrongGuide(q, choice) {
+  const stage = document.getElementById('stage');
+  const guide = el('div', 'guide');
 
-  // --- comparison section ---
-  const cmpSec=el('div','cmp-section');
-  const cmpLbl=el('div','cmp-label');cmpLbl.textContent='Character Comparison';
-  const cmpRow=el('div','cmp-row');
+  // Character comparison section — chars appear HERE, after answering
+  const cmpSec = el('div', 'cmp-section');
+  const cmpLbl = el('div', 'cmp-label');
+  cmpLbl.textContent = 'Character Comparison';
+  const cmpRow = el('div', 'cmp-row');
 
-  // Card for the WRONG choice
-  const wrongRel=q.related.find(r=>r.en===choice)||{char:'?',py:'?',en:choice};
-  const wrongCard=el('div','cmp-card c-wrong');
-  wrongCard.innerHTML=`<div class="cmp-big-char">${wrongRel.char}</div><div class="cmp-py">${wrongRel.py}</div><div class="cmp-en">${wrongRel.en}</div><div class="cmp-tag">✗ Your choice</div>`;
+  const wrongRel = q.related.find(r => r.en === choice) || { char: '?', py: '?', en: choice };
+  const wrongCard = el('div', 'cmp-card c-wrong');
+  wrongCard.innerHTML = `<div class="cmp-big-char">${wrongRel.char}</div><div class="cmp-py">${wrongRel.py}</div><div class="cmp-en">${wrongRel.en}</div><div class="cmp-tag">✗ Your choice</div>`;
 
-  // Arrow
-  const arrow=el('div','cmp-arrow');arrow.textContent='→';
+  const arrow = el('div', 'cmp-arrow');
+  arrow.textContent = '→';
 
-  // Card for the CORRECT answer — animates in
-  const correctCard=el('div','cmp-card c-correct animate-swap');
-  correctCard.innerHTML=`<div class="cmp-big-char">${q.char}</div><div class="cmp-py">${q.pinyin}</div><div class="cmp-en">${q.meaning}</div><div class="cmp-tag">✓ Correct</div>`;
+  const correctCard = el('div', 'cmp-card c-correct animate-swap');
+  correctCard.innerHTML = `<div class="cmp-big-char">${q.char}</div><div class="cmp-py">${q.pinyin}</div><div class="cmp-en">${q.meaning}</div><div class="cmp-tag">✓ Correct</div>`;
 
-  cmpRow.appendChild(wrongCard);cmpRow.appendChild(arrow);cmpRow.appendChild(correctCard);
-  // Also add neutral chips for all related
-  q.related.filter(r=>r.en!==choice&&r.char!==q.char).forEach(r=>{
-    const nc=el('div','cmp-card c-neutral');
-    nc.innerHTML=`<div class="cmp-big-char">${r.char}</div><div class="cmp-py">${r.py}</div><div class="cmp-en">${r.en}</div>`;
+  cmpRow.appendChild(wrongCard);
+  cmpRow.appendChild(arrow);
+  cmpRow.appendChild(correctCard);
+  q.related.filter(r => r.en !== choice && r.char !== q.char).forEach(r => {
+    const nc = el('div', 'cmp-card c-neutral');
+    nc.innerHTML = `<div class="cmp-big-char">${r.char}</div><div class="cmp-py">${r.py}</div><div class="cmp-en">${r.en}</div>`;
     cmpRow.appendChild(nc);
   });
 
-  cmpSec.appendChild(cmpLbl);cmpSec.appendChild(cmpRow);
+  cmpSec.appendChild(cmpLbl);
+  cmpSec.appendChild(cmpRow);
   guide.appendChild(cmpSec);
 
-  // --- guide body ---
-  const body=el('div','guide-body');
+  const body = el('div', 'guide-body');
 
-  // Why wrong
-  const ww=el('div','');
-  const wwt=el('div','g-sec-title');wwt.textContent='Why it was wrong';
-  const wwb=el('div','g-why');wwb.innerHTML=`<p>${q.wrongGuide.replace('{choice}',choice)}</p>`;
-  ww.appendChild(wwt);ww.appendChild(wwb);body.appendChild(ww);
+  const ww = el('div', '');
+  const wwt = el('div', 'g-sec-title'); wwt.textContent = 'Why it was wrong';
+  const wwb = el('div', 'g-why'); wwb.innerHTML = `<p>${q.wrongGuide.replace('{choice}', choice)}</p>`;
+  ww.appendChild(wwt); ww.appendChild(wwb); body.appendChild(ww);
 
-  // Origin
-  const orig=el('div','');
-  const origt=el('div','g-sec-title');origt.textContent='Character Origin';
-  const origb=el('div','g-story');origb.innerHTML=`<p>${q.etymology}</p>`;
-  orig.appendChild(origt);orig.appendChild(origb);body.appendChild(orig);
+  const orig = el('div', '');
+  const origt = el('div', 'g-sec-title'); origt.textContent = 'Character Origin';
+  const origb = el('div', 'g-story'); origb.innerHTML = `<p>${q.etymology}</p>`;
+  orig.appendChild(origt); orig.appendChild(origb); body.appendChild(orig);
 
-  // Stroke tip
-  const stk=el('div','');
-  const stkt=el('div','g-sec-title');stkt.textContent='Writing Tip';
-  const stkb=el('div','g-tip');stkb.innerHTML=`<p><strong>✏️</strong> ${q.strokeTip}</p>`;
-  stk.appendChild(stkt);stk.appendChild(stkb);body.appendChild(stk);
+  const stk = el('div', '');
+  const stkt = el('div', 'g-sec-title'); stkt.textContent = 'Writing Tip';
+  const stkb = el('div', 'g-tip'); stkb.innerHTML = `<p><strong>✏️</strong> ${q.strokeTip}</p>`;
+  stk.appendChild(stkt); stk.appendChild(stkb); body.appendChild(stk);
 
-  // Listen again
-  const lb=el('button','g-voice');lb.innerHTML='🔊 Listen to explanation again';lb.onclick=()=>speak(lastSpeech);
+  const lb = el('button', 'g-voice');
+  lb.innerHTML = '🔊 Listen again';
+  lb.onclick = () => speak(lastSpeech);
   body.appendChild(lb);
 
   guide.appendChild(body);
   stage.appendChild(guide);
 }
 
-function nextQuestion(){
-  synth&&synth.cancel();
+function nextQuestion() {
+  synth && synth.cancel();
   idx++;
-  if(idx>=DATA.length){showResults();return;}
+  if (idx >= DATA.length) { showResults(); return; }
   loadQuestion();
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function showResults(){
+function showResults() {
   show('s-results');
-  const pct=score/DATA.length;
-  document.getElementById('scoreNum').textContent=`${score}/${DATA.length}`;
-  const c=2*Math.PI*50;
-  setTimeout(()=>{
-    const ring=document.getElementById('scoreRing');
-    ring.style.transition='stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)';
-    ring.style.strokeDashoffset=c-(pct*c);
-    ring.style.stroke=pct>=.75?'#1A7A3C':pct>=.5?'#B45309':'#D93025';
-  },150);
-  const p=Math.round(pct*100);
-  const msgs=[[100,'Perfect! 完美！','Every character correct — you are exceptional!'],[75,'Great Job! 很好！','Strong work, almost mastered all 8 characters.'],[50,'Good Start! 不错！','Halfway there — review the guides and try again.'],[0,'Keep Going! 加油！','Every mistake is a lesson — review and retry!']];
-  const [,h,s]=msgs.find(([t])=>p>=t)||msgs[3];
-  document.getElementById('resH').textContent=h;
-  document.getElementById('resS').textContent=s;
-  const rc=document.getElementById('resChips');rc.innerHTML='';
-  results.forEach(r=>{
-    const c=el('div',`rchip ${r.ok?'ok':'fail'}`);
-    c.innerHTML=`<div class="rchip-c">${r.char}</div><div class="rchip-l">${r.meaning}</div>`;
-    rc.appendChild(c);
+  const pct = score / DATA.length;
+  document.getElementById('scoreNum').textContent = `${score}/${DATA.length}`;
+  const c = 2 * Math.PI * 50;
+  setTimeout(() => {
+    const ring = document.getElementById('scoreRing');
+    ring.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)';
+    ring.style.strokeDashoffset = c - (pct * c);
+    ring.style.stroke = pct >= .75 ? '#1A7A3C' : pct >= .5 ? '#B45309' : '#E1001E';
+  }, 150);
+  const p = Math.round(pct * 100);
+  const msgs = [
+    [100, '完美！Perfect!', 'Every character correct — outstanding performance!'],
+    [75, '很好！Great Job!', 'Strong work — almost mastered all 10 characters.'],
+    [50, '不错！Good Start!', 'Halfway there — review the guides and try again.'],
+    [0, '加油！Keep Going!', 'Every mistake is a lesson — review and retry!']
+  ];
+  const [, h, s] = msgs.find(([t]) => p >= t) || msgs[3];
+  document.getElementById('resH').textContent = h;
+  document.getElementById('resS').textContent = s;
+  const rc = document.getElementById('resChips');
+  rc.innerHTML = '';
+  results.forEach(r => {
+    const chip = el('div', `rchip ${r.ok ? 'ok' : 'fail'}`);
+    chip.innerHTML = `<div class="rchip-c">${r.char}</div><div class="rchip-l">${r.meaning}</div>`;
+    rc.appendChild(chip);
   });
-  if(p===100)doConfetti();
+  if (p === 100) doConfetti();
   speak(`You scored ${score} out of ${DATA.length}. ${s}`);
+
+  // Save to backend
+  fetch(window.location.href, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'updateQuizProgress',
+      lessonNumber: currentLevel,
+      userScore: score,
+      totalScore: DATA.length,
+      level: currentLevel,
+      perQuestion: results.map(r => ({ char: r.char, pinyin: r.pinyin, correct: r.ok }))
+    })
+  }).catch(() => {}); // silent fail — backend not yet built
 }
 
-function restartGame(){synth&&synth.cancel();startGame();}
+function restartGame() {
+  synth && synth.cancel();
+  startGame();
+}
 
-function speakThen(text,cb){
-  synth&&synth.cancel();
-  if(!synth||!synth.speak){setTimeout(cb,800);return;}
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='en-US';u.rate=0.88;u.pitch=1;
-  u.onend=cb;
-  // fallback if speech doesn't fire onend
-  const timeout=setTimeout(cb, text.length*70+1500);
-  u.onend=()=>{clearTimeout(timeout);cb();};
+/* ── SPEECH ── */
+function speakThen(text, cb) {
+  synth && synth.cancel();
+  if (!synth || !synth.speak) { setTimeout(cb, 800); return; }
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = 0.88; u.pitch = 1.02;
+  const timeout = setTimeout(cb, text.length * 70 + 1500);
+  u.onend = () => { clearTimeout(timeout); cb(); };
   synth.speak(u);
 }
 
-function speak(text){
-  synth&&synth.cancel();
-  if(!synth)return;
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='en-US';u.rate=0.88;u.pitch=1;
+function speak(text) {
+  synth && synth.cancel();
+  if (!synth) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = 0.88; u.pitch = 1.02;
   synth.speak(u);
 }
 
-function playBeep(ok){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    if(ok){
-      [[523.25,0],[659.25,.09],[783.99,.18]].forEach(([f,t])=>{
-        const o=ctx.createOscillator(),g=ctx.createGain();
-        o.connect(g);g.connect(ctx.destination);
-        o.type='sine';o.frequency.value=f;
-        g.gain.setValueAtTime(0,ctx.currentTime+t);
-        g.gain.linearRampToValueAtTime(.14,ctx.currentTime+t+.05);
-        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+.5);
-        o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.55);
+/* ── AUDIO FEEDBACK ── */
+function playBeep(ok) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (ok) {
+      [[523.25, 0], [659.25, .09], [783.99, .18]].forEach(([f, t]) => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.type = 'sine'; o.frequency.value = f;
+        g.gain.setValueAtTime(0, ctx.currentTime + t);
+        g.gain.linearRampToValueAtTime(.14, ctx.currentTime + t + .05);
+        g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + t + .5);
+        o.start(ctx.currentTime + t); o.stop(ctx.currentTime + t + .55);
       });
-    }else{
-      const o=ctx.createOscillator(),g=ctx.createGain();
-      o.connect(g);g.connect(ctx.destination);
-      o.type='sawtooth';
-      o.frequency.setValueAtTime(260,ctx.currentTime);
-      o.frequency.linearRampToValueAtTime(120,ctx.currentTime+.35);
-      g.gain.setValueAtTime(.1,ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.38);
-      o.start();o.stop(ctx.currentTime+.4);
+    } else {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = 'sawtooth';
+      o.frequency.setValueAtTime(260, ctx.currentTime);
+      o.frequency.linearRampToValueAtTime(120, ctx.currentTime + .35);
+      g.gain.setValueAtTime(.1, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .38);
+      o.start(); o.stop(ctx.currentTime + .4);
     }
-  }catch(e){}
+  } catch (e) {}
 }
 
-function doConfetti(){
-  const wrap=document.getElementById('cfWrap');
-  const cols=['#D93025','#1A7A3C','#B45309','#1D4ED8','#7C3AED'];
-  for(let i=0;i<55;i++){
-    const p=el('div','cf');
-    p.style.cssText=`left:${10+Math.random()*80}%;top:-20px;background:${cols[i%cols.length]};animation-delay:${Math.random()*.5}s;animation-duration:${1.2+Math.random()*.9}s;transform:rotate(${Math.random()*360}deg)`;
-    wrap.appendChild(p);setTimeout(()=>p.remove(),2800);
+/* ── CONFETTI ── */
+function doConfetti() {
+  const wrap = document.getElementById('cfWrap');
+  const cols = ['#E1001E', '#1A7A3C', '#B45309', '#2487C1', '#000000'];
+  for (let i = 0; i < 55; i++) {
+    const p = el('div', 'cf');
+    p.style.cssText = `left:${10 + Math.random() * 80}%;top:-20px;background:${cols[i % cols.length]};animation-delay:${Math.random() * .5}s;animation-duration:${1.2 + Math.random() * .9}s;transform:rotate(${Math.random() * 360}deg)`;
+    wrap.appendChild(p);
+    setTimeout(() => p.remove(), 2800);
   }
 }
-
-function el(tag,cls){const e=document.createElement(tag);if(cls)e.className=cls;return e;}
 </script>
 </body>
 </html>

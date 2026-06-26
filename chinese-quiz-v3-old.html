@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChinesePod · Lesson 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F6F2;
+  --card:#FFFFFF;
+  --border:#E4E2DC;
+  --ink:#1A1917;
+  --ink2:#6B6860;
+  --ink3:#AEACA6;
+  --red:#D93025;
+  --red-bg:#FEF2F1;
+  --red-b:#FECDCA;
+  --green:#1A7A3C;
+  --green-bg:#F0FDF5;
+  --green-b:#A7F3C0;
+  --amber:#B45309;
+  --amber-bg:#FFFBEB;
+  --amber-b:#FDE68A;
+  --blue:#1D4ED8;
+  --blue-bg:#EFF6FF;
+  --shadow:0 2px 12px rgba(26,25,23,.08);
+  --shadow-lg:0 12px 48px rgba(26,25,23,.14);
+}
+html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;width:100%}
+.screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center}
+
+/* ══ INTRO ══ */
+#s-intro{padding:40px 20px;position:relative;overflow:hidden}
+.intro-bg{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif SC',serif;font-size:340px;color:rgba(26,25,23,.03);
+  pointer-events:none;user-select:none;z-index:0;
+  animation:bgPulse 6s ease-in-out infinite;
+}
+@keyframes bgPulse{0%,100%{transform:scale(1) rotate(-2deg)}50%{transform:scale(1.04) rotate(2deg)}}
+.intro-box{
+  position:relative;z-index:1;max-width:520px;width:100%;
+  background:var(--card);border:1px solid var(--border);border-radius:28px;
+  padding:48px 40px;box-shadow:var(--shadow-lg);text-align:center;
+}
+.intro-pill{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--red-bg);border:1px solid var(--red-b);
+  border-radius:100px;padding:5px 16px;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);
+  margin-bottom:24px;
+}
+.intro-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--red)}
+.intro-h{font-size:clamp(32px,6vw,48px);font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:12px}
+.intro-h span{font-family:'Noto Serif SC',serif;color:var(--red)}
+.intro-p{font-size:15px;color:var(--ink2);line-height:1.7;margin-bottom:32px;font-weight:300}
+.intro-chars{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px}
+.ic{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:12px 14px;display:flex;flex-direction:column;align-items:center;gap:3px;
+  animation:icIn .5s cubic-bezier(.34,1.56,.64,1) both;cursor:default;
+  transition:all .22s;
+}
+.ic:hover{border-color:var(--red);background:#fff;transform:translateY(-3px);box-shadow:0 6px 20px rgba(217,48,37,.12)}
+@keyframes icIn{from{opacity:0;transform:translateY(18px) scale(.88)}to{opacity:1;transform:none}}
+.ic-c{font-family:'Noto Serif SC',serif;font-size:32px;line-height:1;color:var(--ink)}
+.ic-p{font-size:10px;font-weight:700;color:var(--red);letter-spacing:.02em}
+.ic-m{font-size:9px;color:var(--ink3);font-weight:500}
+.btn-start{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--ink);color:#fff;border:none;border-radius:100px;
+  padding:15px 36px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;
+  cursor:pointer;letter-spacing:-.01em;
+  box-shadow:0 4px 20px rgba(26,25,23,.22);transition:all .2s;
+}
+.btn-start:hover{background:var(--red);transform:translateY(-2px);box-shadow:0 8px 28px rgba(217,48,37,.3)}
+
+/* ══ GAME ══ */
+#s-game{justify-content:flex-start;padding:0}
+
+/* topbar */
+.tb{
+  width:100%;background:var(--card);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:14px;padding:14px 24px;
+  position:sticky;top:0;z-index:100;
+}
+.tb-logo{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;flex-shrink:0}
+.tb-dot{width:7px;height:7px;border-radius:50%;background:var(--red)}
+.tb-bar-wrap{flex:1;display:flex;flex-direction:column;gap:5px}
+.tb-track{height:5px;background:var(--bg);border-radius:3px;overflow:hidden}
+.tb-fill{height:100%;background:var(--red);border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.tb-dots{display:flex;gap:5px}
+.tdot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .3s}
+.tdot.ok{background:var(--green)}
+.tdot.bad{background:var(--red)}
+.tb-cnt{font-size:12px;font-weight:700;color:var(--ink2);white-space:nowrap;flex-shrink:0}
+
+/* game center stage */
+.stage{
+  width:100%;max-width:680px;
+  padding:32px 20px 48px;
+  display:flex;flex-direction:column;align-items:center;gap:24px;
+}
+
+/* ── PHASE 1: question card ── */
+.q-card{
+  width:100%;background:var(--card);border:1px solid var(--border);
+  border-radius:24px;padding:40px;
+  display:flex;flex-direction:column;align-items:center;gap:20px;
+  box-shadow:var(--shadow);
+}
+.char-stage{
+  width:160px;height:160px;position:relative;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.char-grid-lines{
+  position:absolute;inset:0;border:2px solid var(--border);border-radius:18px;
+}
+.char-grid-lines::before{
+  content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--border);
+}
+.char-grid-lines::after{
+  content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border);
+}
+.the-char{
+  font-family:'Noto Serif SC',serif;font-size:96px;font-weight:700;
+  color:var(--ink);line-height:1;position:relative;z-index:2;user-select:none;
+}
+.the-char.pop{animation:cPop .5s cubic-bezier(.34,1.56,.64,1)}
+.the-char.shake{animation:cShake .45s ease}
+.the-char.cheer{animation:cCheer .55s cubic-bezier(.34,1.56,.64,1)}
+@keyframes cPop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes cShake{0%,100%{transform:translateX(0) rotate(0)}20%{transform:translateX(-10px) rotate(-5deg)}40%{transform:translateX(10px) rotate(5deg)}60%{transform:translateX(-7px) rotate(-3deg)}80%{transform:translateX(7px) rotate(3deg)}}
+@keyframes cCheer{0%{transform:scale(1)}35%{transform:scale(1.28) rotate(8deg)}70%{transform:scale(.95) rotate(-3deg)}100%{transform:scale(1) rotate(0)}}
+
+.q-text{
+  text-align:center;
+  font-size:18px;font-weight:500;color:var(--ink);line-height:1.5;
+}
+.q-speaking{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--blue-bg);border:1px solid #BFDBFE;border-radius:100px;
+  padding:6px 16px;font-size:12px;font-weight:600;color:var(--blue);
+  animation:fadeIn .3s ease;
+}
+.wave{display:inline-flex;align-items:flex-end;gap:3px;margin-left:2px}
+.wave span{width:3px;border-radius:2px;background:var(--blue);animation:wv .8s ease-in-out infinite}
+.wave span:nth-child(1){height:6px;animation-delay:0s}
+.wave span:nth-child(2){height:12px;animation-delay:.15s}
+.wave span:nth-child(3){height:8px;animation-delay:.3s}
+.wave span:nth-child(4){height:12px;animation-delay:.45s}
+.wave span:nth-child(5){height:6px;animation-delay:.6s}
+@keyframes wv{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
+
+/* ── OPTIONS ── */
+.opts{width:100%;display:flex;flex-direction:column;gap:10px}
+.opt{
+  background:var(--card);border:2px solid var(--border);border-radius:18px;
+  padding:18px 22px;display:flex;align-items:center;gap:16px;
+  cursor:pointer;text-align:left;width:100%;outline:none;
+  transition:border-color .18s, background .18s, transform .18s;
+  position:relative;overflow:hidden;
+  animation:optSlide .35s cubic-bezier(.34,1.56,.64,1) both;
+}
+.opt:nth-child(1){animation-delay:.05s}
+.opt:nth-child(2){animation-delay:.12s}
+.opt:nth-child(3){animation-delay:.19s}
+@keyframes optSlide{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
+.opt:hover:not(:disabled){border-color:var(--ink);background:var(--bg);transform:translateX(5px)}
+.opt:disabled{cursor:default}
+.opt-num{
+  width:34px;height:34px;border-radius:10px;
+  background:var(--bg);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:var(--ink2);flex-shrink:0;
+  transition:all .2s;
+}
+.opt-char-sm{
+  font-family:'Noto Serif SC',serif;font-size:30px;
+  color:var(--ink);width:38px;text-align:center;flex-shrink:0;
+  transition:color .2s;
+}
+.opt-label{font-size:16px;font-weight:500;color:var(--ink);flex:1;transition:color .2s}
+.opt-check{
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;font-size:12px;flex-shrink:0;transition:opacity .2s;
+}
+
+/* states */
+.opt.s-correct{background:var(--green-bg);border-color:var(--green);transform:none;animation:slideRight .35s ease}
+.opt.s-correct .opt-num{background:var(--green);border-color:var(--green);color:#fff}
+.opt.s-correct .opt-char-sm,.opt.s-correct .opt-label{color:var(--green)}
+.opt.s-correct .opt-check{opacity:1;background:var(--green);color:#fff}
+@keyframes slideRight{from{transform:translateX(-10px);opacity:.6}to{transform:none;opacity:1}}
+
+.opt.s-wrong{background:var(--red-bg);border-color:var(--red);animation:optWrong .45s ease}
+.opt.s-wrong .opt-num{background:var(--red);border-color:var(--red);color:#fff}
+.opt.s-wrong .opt-char-sm,.opt.s-wrong .opt-label{color:var(--red)}
+.opt.s-wrong .opt-check{opacity:1;background:var(--red);color:#fff}
+@keyframes optWrong{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+
+.opt.s-reveal{background:var(--green-bg);border-color:var(--green);border-style:dashed}
+.opt.s-reveal .opt-char-sm,.opt.s-reveal .opt-label{color:var(--green)}
+
+/* ── GUIDE PANEL (shown after wrong) ── */
+.guide{
+  width:100%;background:var(--card);border:1px solid var(--border);
+  border-radius:24px;overflow:hidden;box-shadow:var(--shadow);
+  animation:guideIn .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes guideIn{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
+
+/* Comparison section — BIG animated chars */
+.cmp-section{padding:32px 32px 24px;border-bottom:1px solid var(--border)}
+.cmp-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:20px}
+.cmp-row{display:flex;gap:12px;align-items:stretch}
+.cmp-card{
+  flex:1;border-radius:18px;padding:20px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  border:2px solid var(--border);background:var(--bg);
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+}
+.cmp-card.c-correct{background:var(--green-bg);border-color:var(--green)}
+.cmp-card.c-wrong{background:var(--red-bg);border-color:var(--red)}
+.cmp-card.c-neutral{}
+
+/* animated swap: wrong→correct */
+.cmp-card.animate-swap{animation:swapIn .7s cubic-bezier(.34,1.56,.64,1)}
+@keyframes swapIn{0%{transform:scale(.5) rotateY(90deg);opacity:0}60%{transform:scale(1.12) rotateY(-5deg)}100%{transform:scale(1) rotateY(0);opacity:1}}
+
+.cmp-big-char{
+  font-family:'Noto Serif SC',serif;font-size:64px;font-weight:700;
+  line-height:1;color:var(--ink);transition:color .4s;
+}
+.cmp-card.c-correct .cmp-big-char{color:var(--green)}
+.cmp-card.c-wrong .cmp-big-char{color:var(--red)}
+.cmp-py{font-size:14px;font-weight:700;color:var(--red)}
+.cmp-card.c-correct .cmp-py{color:var(--green)}
+.cmp-en{font-size:12px;color:var(--ink2);font-weight:500;text-align:center}
+.cmp-tag{
+  font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 10px;border-radius:100px;margin-top:2px;
+}
+.cmp-card.c-correct .cmp-tag{background:var(--green);color:#fff}
+.cmp-card.c-wrong .cmp-tag{background:var(--red);color:#fff}
+
+/* arrow between cards */
+.cmp-arrow{
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink3);font-size:20px;flex-shrink:0;padding:0 4px;
+  opacity:0;animation:arrowIn .5s ease .4s forwards;
+}
+@keyframes arrowIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+
+/* Guide body */
+.guide-body{padding:24px 32px;display:flex;flex-direction:column;gap:16px}
+.g-sec-title{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.g-why{background:var(--red-bg);border:1px solid var(--red-b);border-left:3px solid var(--red);border-radius:12px;padding:14px 16px}
+.g-why p{font-size:13px;line-height:1.75;color:#7F1D1D}
+.g-story{background:var(--blue-bg);border:1px solid #BFDBFE;border-radius:12px;padding:14px 16px}
+.g-story p{font-size:13px;line-height:1.75;color:#1E40AF}
+.g-tip{background:var(--amber-bg);border:1px solid var(--amber-b);border-left:3px solid #F59E0B;border-radius:12px;padding:14px 16px}
+.g-tip p{font-size:13px;line-height:1.75;color:#78350F}
+.g-tip strong{color:#451A03}
+.g-voice{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg);border:1px solid var(--border);border-radius:100px;
+  padding:8px 16px;font-size:12px;font-weight:600;color:var(--ink2);
+  cursor:pointer;align-self:flex-start;border:none;font-family:'Outfit',sans-serif;
+  transition:all .2s;
+}
+.g-voice:hover{background:var(--ink);color:#fff}
+
+/* correct feedback banner */
+.correct-banner{
+  width:100%;background:var(--green-bg);border:1px solid var(--green-b);
+  border-radius:18px;padding:20px 24px;
+  display:flex;align-items:center;gap:14px;
+  animation:guideIn .4s ease;
+}
+.cb-icon{width:40px;height:40px;border-radius:12px;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.cb-title{font-size:15px;font-weight:700;color:var(--green);margin-bottom:2px}
+.cb-text{font-size:13px;color:var(--ink2);line-height:1.5}
+
+/* NEXT button */
+.btn-next{
+  width:100%;padding:16px;background:var(--ink);color:#fff;
+  border:none;border-radius:14px;
+  font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 4px 16px rgba(26,25,23,.18);transition:all .2s;
+  animation:guideIn .3s ease;
+}
+.btn-next:hover{background:var(--red);box-shadow:0 6px 20px rgba(217,48,37,.28);transform:translateY(-1px)}
+
+/* hint pill */
+.hint-pill{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--amber-bg);border:1px solid var(--amber-b);border-radius:100px;
+  padding:7px 16px;font-size:12px;font-weight:500;color:var(--amber);
+  opacity:0;transform:translateY(6px);transition:all .35s;
+}
+.hint-pill.show{opacity:1;transform:none}
+
+/* ══ RESULTS ══ */
+#s-results{padding:40px 20px}
+.res-box{
+  background:var(--card);border:1px solid var(--border);border-radius:28px;
+  padding:48px 40px;max-width:520px;width:100%;text-align:center;
+  box-shadow:var(--shadow-lg);
+}
+.ring-wrap{width:120px;height:120px;position:relative;margin:0 auto 24px}
+.ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-num{font-size:30px;font-weight:700;color:var(--ink);line-height:1}
+.ring-lbl{font-size:10px;color:var(--ink3);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.res-h{font-size:26px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.res-s{font-size:14px;color:var(--ink2);line-height:1.6;margin-bottom:28px}
+.res-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:28px}
+.rchip{width:60px;height:70px;border-radius:14px;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:var(--bg)}
+.rchip.ok{background:var(--green-bg);border-color:var(--green-b)}
+.rchip.fail{background:var(--red-bg);border-color:var(--red-b)}
+.rchip-c{font-family:'Noto Serif SC',serif;font-size:24px;color:var(--ink)}
+.rchip.ok .rchip-c{color:var(--green)}
+.rchip.fail .rchip-c{color:var(--red)}
+.rchip-l{font-size:9px;color:var(--ink3);text-align:center;font-weight:600}
+.btn-again{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--ink);color:#fff;border:none;border-radius:100px;
+  padding:13px 32px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;box-shadow:0 4px 20px rgba(26,25,23,.2);transition:all .2s;
+}
+.btn-again:hover{background:var(--red);transform:translateY(-2px)}
+
+/* confetti */
+.cf-wrap{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+.cf{position:absolute;width:8px;height:12px;border-radius:2px;animation:cfFall 1.6s ease-in forwards}
+@keyframes cfFall{from{transform:translateY(-30px) rotate(0);opacity:1}to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body>
+
+<!-- ══ INTRO ══ -->
+<div id="s-intro" class="screen active">
+  <div class="intro-bg" id="introBg">学</div>
+  <div class="intro-box">
+    <div class="intro-pill"><div class="intro-pill-dot"></div>ChinesePod · Lesson 1</div>
+    <h1 class="intro-h">Learn <span>8</span> Chinese<br>Characters</h1>
+    <p class="intro-p">Voice-guided quiz with instant feedback.<br>Learn why every character looks the way it does.</p>
+    <div class="intro-chars" id="introChars"></div>
+    <button class="btn-start" onclick="startGame()">
+      Start Lesson
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ══ GAME ══ -->
+<div id="s-game" class="screen">
+  <div class="tb">
+    <div class="tb-logo"><div class="tb-dot"></div>ChinesePod</div>
+    <div class="tb-bar-wrap">
+      <div class="tb-track"><div class="tb-fill" id="tbFill" style="width:0%"></div></div>
+      <div class="tb-dots" id="tbDots"></div>
+    </div>
+    <div class="tb-cnt" id="tbCnt">1 / 8</div>
+  </div>
+  <div class="stage" id="stage"></div>
+</div>
+
+<!-- ══ RESULTS ══ -->
+<div id="s-results" class="screen">
+  <div class="res-box">
+    <div class="ring-wrap">
+      <svg viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#E4E2DC" stroke-width="10"/>
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#1A7A3C" stroke-width="10"
+          stroke-dasharray="314.2" stroke-dashoffset="314.2" id="scoreRing" stroke-linecap="round"/>
+      </svg>
+      <div class="ring-center">
+        <div class="ring-num" id="scoreNum">0/8</div>
+        <div class="ring-lbl">Score</div>
+      </div>
+    </div>
+    <div class="res-h" id="resH">Well done!</div>
+    <div class="res-s" id="resS"></div>
+    <div class="res-chips" id="resChips"></div>
+    <button class="btn-again" onclick="restartGame()">
+      Play Again
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="cf-wrap" id="cfWrap"></div>
+
+<script>
+const DATA = [
+  {
+    char:'口',pinyin:'kǒu',meaning:'mouth',
+    intro:'Look at this character carefully. What do you think it means?',
+    question:'The character 口 — what does it mean?',
+    options:['mouth','door','sun'],
+    related:[{char:'口',py:'kǒu',en:'mouth'},{char:'门',py:'mén',en:'door'},{char:'日',py:'rì',en:'sun'}],
+    correctSpeech:'Excellent! 口, pronounced kǒu, means mouth. This square shape is like your lips forming a circle to speak.',
+    wrongGuide:'You selected {choice}, but 口, pronounced kǒu, means MOUTH. Look at how 口 is just a square opening — like your lips. Compare it with 门 meaning door, which has two panels inside, and 日 meaning sun, which is taller with a horizontal stroke across the middle.',
+    etymology:'口 is one of the oldest pictographs. In ancient oracle bone script, it was a simple square — the outline of open lips. Today it appears in hundreds of words: 口水 meaning saliva, 出口 meaning exit, and 人口 meaning population.',
+    strokeTip:'Write 口 in 3 strokes: first the left side going down, then top and right side turning down, then close the bottom with a horizontal stroke. Always close the box last!'
+  },
+  {
+    char:'入',pinyin:'rù',meaning:'to enter',
+    intro:'Here is a new character. Look at those two strokes.',
+    question:'The character 入 — what does it mean?',
+    options:['to enter','person','eight'],
+    related:[{char:'入',py:'rù',en:'to enter'},{char:'人',py:'rén',en:'person'},{char:'八',py:'bā',en:'eight'}],
+    correctSpeech:'Well done! 入, pronounced rù, means to enter. Those two strokes meet at the top like a wedge going in — entering something.',
+    wrongGuide:'You chose {choice}, but 入, pronounced rù, means TO ENTER. The right stroke is longer than the left, and they meet at the top like an arrow going inward. Compare with 人 meaning person, where both strokes spread evenly, and 八 meaning eight, where the strokes lean away from each other.',
+    etymology:'入 is a pictograph of an arrow pointing downward into a space — the act of entering. It appears in 进入 meaning to go into, 入口 meaning entrance, and 收入 meaning income.',
+    strokeTip:'Write 入 in 2 strokes: first a short left-falling stroke, then a longer right-falling stroke that extends further. The right stroke must always be longer than the left!'
+  },
+  {
+    char:'下',pinyin:'xià',meaning:'down / next',
+    intro:'This character shows direction. Can you guess which one?',
+    question:'The character 下 — what does it mean?',
+    options:['down / next','up','middle'],
+    related:[{char:'下',py:'xià',en:'down/next'},{char:'上',py:'shàng',en:'up'},{char:'中',py:'zhōng',en:'middle'}],
+    correctSpeech:'Correct! 下, pronounced xià, means down or next. The small mark hangs below the line — pointing downward.',
+    wrongGuide:'You chose {choice}, but 下, pronounced xià, means DOWN or NEXT. See the small mark — it is below the horizontal line, pointing downward. Now compare with 上, meaning up, where the mark is above the line. And 中, meaning middle, has a vertical line through the centre of a box.',
+    etymology:'下 shows a reference line with a mark placed below it, indicating downward direction. It is the direct mirror of 上, meaning up. It also means next, as in 下次 meaning next time.',
+    strokeTip:'Write 下 in 3 strokes: horizontal line first, then a vertical stroke downward from the centre, then a small dot to the lower right. The dot falls below the horizontal!'
+  },
+  {
+    char:'见',pinyin:'jiàn',meaning:'to meet / to see',
+    intro:'This character combines two ideas into one. Study it closely.',
+    question:'The character 见 — what does it mean?',
+    options:['to meet / to see','to walk','to hear'],
+    related:[{char:'见',py:'jiàn',en:'to meet/see'},{char:'走',py:'zǒu',en:'to walk'},{char:'听',py:'tīng',en:'to hear'}],
+    correctSpeech:'Excellent! 见, pronounced jiàn, means to meet or to see. An eye on top of walking legs — you go out and see people!',
+    wrongGuide:'You chose {choice}, but 见, pronounced jiàn, means TO MEET or TO SEE. It shows an eye sitting on two walking legs — ancient Chinese imagined seeing as active, you walk out to meet the world. Compare 走, meaning to walk, which has a footstep at the bottom, and 听, meaning to hear, which has an ear radical on the left.',
+    etymology:'见 is a pictograph of an eye on two legs. Ancient Chinese thought of seeing as going out to encounter things. Used in 见面 meaning to meet face to face, 看见 meaning to see, and 意见 meaning opinion.',
+    strokeTip:'Write 见 in 4 strokes: short horizontal, then vertical with a hook, then left-falling stroke, then a final sweeping stroke. The hook on the second stroke is essential!'
+  },
+  {
+    char:'去',pinyin:'qù',meaning:'to go',
+    intro:'Movement is built into this character. Which direction?',
+    question:'The character 去 — what does it mean?',
+    options:['to go','to come','to stay'],
+    related:[{char:'去',py:'qù',en:'to go'},{char:'来',py:'lái',en:'to come'},{char:'在',py:'zài',en:'to stay'}],
+    correctSpeech:'Perfect! 去, pronounced qù, means to go — movement away from you. Its exact opposite is 来, meaning to come.',
+    wrongGuide:'You chose {choice}, but 去, pronounced qù, means TO GO — movement away. Its opposite is 来, pronounced lái, meaning to come — movement toward you. And 在, pronounced zài, means to be staying at a location. Remember: 去 has an enclosure at the bottom that the person is escaping from!',
+    etymology:'去 originally depicted a person leaving a dwelling. The top part is the person, the bottom enclosure is the place they are leaving. Used in 去年 meaning last year, 出去 meaning to go out, and 过去 meaning the past.',
+    strokeTip:'Write 去 in 5 strokes. The top part is like 土 — horizontal, short vertical, then horizontal again. Then add the left and right sides of the enclosure and close the bottom.'
+  },
+  {
+    char:'时',pinyin:'shí',meaning:'time',
+    intro:'Look for a familiar radical hiding on the left side.',
+    question:'The character 时 — what does it mean?',
+    options:['time','day','year'],
+    related:[{char:'时',py:'shí',en:'time'},{char:'天',py:'tiān',en:'day/sky'},{char:'年',py:'nián',en:'year'}],
+    correctSpeech:'Great job! 时, pronounced shí, means time. The sun radical on the left tells you this character is about measuring the hours.',
+    wrongGuide:'You chose {choice}, but 时, pronounced shí, means TIME. The key is the sun radical 日 on the left side — ancient people used the sun to tell time. Compare 天, meaning day or sky, which shows a person under the vast sky, and 年, meaning year, which contains grain stalks suggesting a harvest cycle.',
+    etymology:'时 combines 日, the sun, on the left with 寺, meaning temple, on the right. Ancient temples used sundials — the shadow on the temple floor marked each hour. Used in 时间 meaning time, and 时候 meaning moment.',
+    strokeTip:'Always write the sun radical 日 on the left first, then the right component. In compound characters, left radicals always come before right components — this is a universal rule in Chinese writing!'
+  },
+  {
+    char:'路',pinyin:'lù',meaning:'road / way',
+    intro:'Find the radical that tells you what this character is about.',
+    question:'The character 路 — what does it mean?',
+    options:['road / way','bridge','mountain'],
+    related:[{char:'路',py:'lù',en:'road/way'},{char:'桥',py:'qiáo',en:'bridge'},{char:'山',py:'shān',en:'mountain'}],
+    correctSpeech:'Correct! 路, pronounced lù, means road or way. The foot radical on the left shows that roads are made for feet to walk on.',
+    wrongGuide:'You chose {choice}, but 路, pronounced lù, means ROAD or WAY. Look for the foot radical 足 on the left side — roads are built for feet. Compare 桥, meaning bridge, which has the wood radical because bridges were made of wood, and 山, meaning mountain, which looks like three mountain peaks rising up.',
+    etymology:'路 has the foot radical 足 on the left, showing movement, and 各 on the right meaning each or every — the road reaches everywhere for everyone. Used in 道路 meaning road, 路上 meaning on the way, and 出路 meaning a way out.',
+    strokeTip:'Write the foot radical 足 on the left first, all 7 strokes of it, then write the right component 各. The rule is always left before right, top before bottom in Chinese characters!'
+  },
+  {
+    char:'人',pinyin:'rén',meaning:'person',
+    intro:'This is one of the most ancient Chinese pictographs. What do you see?',
+    question:'The character 人 — what does it mean?',
+    options:['person','to enter','big'],
+    related:[{char:'人',py:'rén',en:'person'},{char:'入',py:'rù',en:'to enter'},{char:'大',py:'dà',en:'big'}],
+    correctSpeech:'Wonderful! 人, pronounced rén, means person. Two balanced strokes — a human figure seen from the side, walking forward.',
+    wrongGuide:'You chose {choice}, but 人, pronounced rén, means PERSON. Both strokes spread evenly like legs walking. Compare 入, meaning to enter, where the right stroke is longer and strokes meet at the top like a wedge. And 大, meaning big, adds a horizontal arm stroke across the person with arms spread wide to show bigness!',
+    etymology:'人 is one of the oldest pictographs in Chinese — a person seen in profile, leaning slightly forward. The left stroke is the body and one leg, the right stroke is the other leg. It appears in 人口 meaning population, 大人 meaning adult, and 工人 meaning worker.',
+    strokeTip:'Write 人 in just 2 strokes: left-falling stroke first from the top, then right-falling stroke starting slightly to the right. This is one of the most fundamental characters — master it and you will see it everywhere!'
+  }
+];
+
+let order=[],idx=0,score=0,answered=false,results=[],hintTimer,lastSpeech='';
+const synth=window.speechSynthesis;
+
+// build intro chars
+const ic=document.getElementById('introChars');
+DATA.forEach((q,i)=>{
+  const d=document.createElement('div');d.className='ic';d.style.animationDelay=(i*.06)+'s';
+  d.innerHTML=`<span class="ic-c">${q.char}</span><span class="ic-p">${q.pinyin}</span><span class="ic-m">${q.meaning}</span>`;
+  ic.appendChild(d);
+});
+// cycle bg char
+let bgi=0; const bgChars=DATA.map(d=>d.char);
+setInterval(()=>{bgi=(bgi+1)%bgChars.length;document.getElementById('introBg').textContent=bgChars[bgi];},2000);
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function startGame(){
+  show('s-game');
+  order=shuffle([...Array(DATA.length).keys()]);
+  idx=0;score=0;results=[];
+  buildDots();loadQuestion();
+}
+
+function buildDots(){
+  const w=document.getElementById('tbDots');w.innerHTML='';
+  DATA.forEach((_,i)=>{const d=document.createElement('div');d.className='tdot';d.id='td'+i;w.appendChild(d);});
+}
+
+function loadQuestion(){
+  answered=false;clearTimeout(hintTimer);
+  const q=DATA[order[idx]];
+  document.getElementById('tbCnt').textContent=`${idx+1} / ${DATA.length}`;
+  document.getElementById('tbFill').style.width=(idx/DATA.length*100)+'%';
+
+  // Build stage
+  const stage=document.getElementById('stage');
+  stage.innerHTML='';
+
+  // Question card
+  const qcard=el('div','q-card');
+  const charStage=el('div','char-stage');
+  const gridLines=el('div','char-grid-lines');
+  const theChar=el('div','the-char pop');
+  theChar.id='mainChar';theChar.textContent=q.char;
+  charStage.appendChild(gridLines);charStage.appendChild(theChar);
+
+  const qtext=el('div','q-text');
+  qtext.id='qtext';
+  qtext.innerHTML=`<div class="q-speaking" id="speaking">🔊 Listen to the question<div class="wave"><span></span><span></span><span></span><span></span><span></span></div></div>`;
+
+  const hintPill=el('div','hint-pill');hintPill.id='hintPill';hintPill.textContent=q.intro;
+
+  qcard.appendChild(charStage);qcard.appendChild(qtext);qcard.appendChild(hintPill);
+  stage.appendChild(qcard);
+
+  // Options (hidden initially)
+  const optsWrap=el('div','opts');optsWrap.id='optsWrap';optsWrap.style.display='none';
+  const labels=['A','B','C'];
+  const opts=shuffle(q.options);
+  opts.forEach((opt,i)=>{
+    const rel=q.related.find(r=>r.en===opt);
+    const ch=rel?rel.char:'·';
+    const btn=el('button','opt');
+    btn.innerHTML=`<div class="opt-num">${labels[i]}</div><div class="opt-char-sm">${ch}</div><div class="opt-label">${opt}</div><div class="opt-check">${opt===q.meaning?'✓':'✗'}</div>`;
+    btn.addEventListener('click',()=>pick(opt,btn,q));
+    optsWrap.appendChild(btn);
+  });
+  stage.appendChild(optsWrap);
+
+  // Speak question then show options
+  const speech=`${q.intro} ${q.question}`;
+  lastSpeech=speech;
+  speakThen(speech,()=>{
+    document.getElementById('qtext').innerHTML=`<strong style="font-size:17px">${q.question}</strong>`;
+    optsWrap.style.display='flex';optsWrap.style.flexDirection='column';
+    // show hint after delay
+    hintTimer=setTimeout(()=>document.getElementById('hintPill').classList.add('show'),8000);
+  });
+}
+
+function pick(choice,btn,q){
+  if(answered)return;answered=true;clearTimeout(hintTimer);
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  const ok=choice===q.meaning;
+
+  if(ok){
+    btn.className='opt s-correct';
+    document.getElementById('mainChar').className='the-char cheer';
+    document.getElementById('td'+idx).classList.add('ok');
+    score++;results.push({...q,ok:true});
+    playBeep(true);doConfetti();
+    showCorrectFeedback(q);
+    const sp=q.correctSpeech;lastSpeech=sp;speak(sp);
+  } else {
+    btn.className='opt s-wrong';
+    document.getElementById('mainChar').className='the-char shake';
+    document.getElementById('td'+idx).classList.add('bad');
+    results.push({...q,ok:false});
+    // highlight correct
+    document.querySelectorAll('.opt').forEach(b=>{
+      if(b.querySelector('.opt-label').textContent===q.meaning)b.className='opt s-reveal';
+    });
+    playBeep(false);
+    showWrongGuide(q,choice);
+    const sp=q.wrongGuide.replace('{choice}',choice);lastSpeech=sp+' '+q.etymology+' '+q.strokeTip;
+    speak(sp+' '+q.etymology+' Here is a writing tip. '+q.strokeTip);
+  }
+
+  // Next button
+  const nb=el('button','btn-next');
+  nb.innerHTML='Next Character <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+  nb.onclick=nextQuestion;
+  document.getElementById('stage').appendChild(nb);
+}
+
+function showCorrectFeedback(q){
+  const stage=document.getElementById('stage');
+  const banner=el('div','correct-banner');
+  banner.innerHTML=`<div class="cb-icon">✓</div><div><div class="cb-title">Correct! ${q.char} = ${q.meaning}</div><div class="cb-text">${q.etymology}</div></div>`;
+  stage.appendChild(banner);
+}
+
+function showWrongGuide(q,choice){
+  const stage=document.getElementById('stage');
+  const guide=el('div','guide');
+
+  // --- comparison section ---
+  const cmpSec=el('div','cmp-section');
+  const cmpLbl=el('div','cmp-label');cmpLbl.textContent='Character Comparison';
+  const cmpRow=el('div','cmp-row');
+
+  // Card for the WRONG choice
+  const wrongRel=q.related.find(r=>r.en===choice)||{char:'?',py:'?',en:choice};
+  const wrongCard=el('div','cmp-card c-wrong');
+  wrongCard.innerHTML=`<div class="cmp-big-char">${wrongRel.char}</div><div class="cmp-py">${wrongRel.py}</div><div class="cmp-en">${wrongRel.en}</div><div class="cmp-tag">✗ Your choice</div>`;
+
+  // Arrow
+  const arrow=el('div','cmp-arrow');arrow.textContent='→';
+
+  // Card for the CORRECT answer — animates in
+  const correctCard=el('div','cmp-card c-correct animate-swap');
+  correctCard.innerHTML=`<div class="cmp-big-char">${q.char}</div><div class="cmp-py">${q.pinyin}</div><div class="cmp-en">${q.meaning}</div><div class="cmp-tag">✓ Correct</div>`;
+
+  cmpRow.appendChild(wrongCard);cmpRow.appendChild(arrow);cmpRow.appendChild(correctCard);
+  // Also add neutral chips for all related
+  q.related.filter(r=>r.en!==choice&&r.char!==q.char).forEach(r=>{
+    const nc=el('div','cmp-card c-neutral');
+    nc.innerHTML=`<div class="cmp-big-char">${r.char}</div><div class="cmp-py">${r.py}</div><div class="cmp-en">${r.en}</div>`;
+    cmpRow.appendChild(nc);
+  });
+
+  cmpSec.appendChild(cmpLbl);cmpSec.appendChild(cmpRow);
+  guide.appendChild(cmpSec);
+
+  // --- guide body ---
+  const body=el('div','guide-body');
+
+  // Why wrong
+  const ww=el('div','');
+  const wwt=el('div','g-sec-title');wwt.textContent='Why it was wrong';
+  const wwb=el('div','g-why');wwb.innerHTML=`<p>${q.wrongGuide.replace('{choice}',choice)}</p>`;
+  ww.appendChild(wwt);ww.appendChild(wwb);body.appendChild(ww);
+
+  // Origin
+  const orig=el('div','');
+  const origt=el('div','g-sec-title');origt.textContent='Character Origin';
+  const origb=el('div','g-story');origb.innerHTML=`<p>${q.etymology}</p>`;
+  orig.appendChild(origt);orig.appendChild(origb);body.appendChild(orig);
+
+  // Stroke tip
+  const stk=el('div','');
+  const stkt=el('div','g-sec-title');stkt.textContent='Writing Tip';
+  const stkb=el('div','g-tip');stkb.innerHTML=`<p><strong>✏️</strong> ${q.strokeTip}</p>`;
+  stk.appendChild(stkt);stk.appendChild(stkb);body.appendChild(stk);
+
+  // Listen again
+  const lb=el('button','g-voice');lb.innerHTML='🔊 Listen to explanation again';lb.onclick=()=>speak(lastSpeech);
+  body.appendChild(lb);
+
+  guide.appendChild(body);
+  stage.appendChild(guide);
+}
+
+function nextQuestion(){
+  synth&&synth.cancel();
+  idx++;
+  if(idx>=DATA.length){showResults();return;}
+  loadQuestion();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showResults(){
+  show('s-results');
+  const pct=score/DATA.length;
+  document.getElementById('scoreNum').textContent=`${score}/${DATA.length}`;
+  const c=2*Math.PI*50;
+  setTimeout(()=>{
+    const ring=document.getElementById('scoreRing');
+    ring.style.transition='stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)';
+    ring.style.strokeDashoffset=c-(pct*c);
+    ring.style.stroke=pct>=.75?'#1A7A3C':pct>=.5?'#B45309':'#D93025';
+  },150);
+  const p=Math.round(pct*100);
+  const msgs=[[100,'Perfect! 完美！','Every character correct — you are exceptional!'],[75,'Great Job! 很好！','Strong work, almost mastered all 8 characters.'],[50,'Good Start! 不错！','Halfway there — review the guides and try again.'],[0,'Keep Going! 加油！','Every mistake is a lesson — review and retry!']];
+  const [,h,s]=msgs.find(([t])=>p>=t)||msgs[3];
+  document.getElementById('resH').textContent=h;
+  document.getElementById('resS').textContent=s;
+  const rc=document.getElementById('resChips');rc.innerHTML='';
+  results.forEach(r=>{
+    const c=el('div',`rchip ${r.ok?'ok':'fail'}`);
+    c.innerHTML=`<div class="rchip-c">${r.char}</div><div class="rchip-l">${r.meaning}</div>`;
+    rc.appendChild(c);
+  });
+  if(p===100)doConfetti();
+  speak(`You scored ${score} out of ${DATA.length}. ${s}`);
+}
+
+function restartGame(){synth&&synth.cancel();startGame();}
+
+function speakThen(text,cb){
+  synth&&synth.cancel();
+  if(!synth||!synth.speak){setTimeout(cb,800);return;}
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='en-US';u.rate=0.88;u.pitch=1;
+  u.onend=cb;
+  // fallback if speech doesn't fire onend
+  const timeout=setTimeout(cb, text.length*70+1500);
+  u.onend=()=>{clearTimeout(timeout);cb();};
+  synth.speak(u);
+}
+
+function speak(text){
+  synth&&synth.cancel();
+  if(!synth)return;
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='en-US';u.rate=0.88;u.pitch=1;
+  synth.speak(u);
+}
+
+function playBeep(ok){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    if(ok){
+      [[523.25,0],[659.25,.09],[783.99,.18]].forEach(([f,t])=>{
+        const o=ctx.createOscillator(),g=ctx.createGain();
+        o.connect(g);g.connect(ctx.destination);
+        o.type='sine';o.frequency.value=f;
+        g.gain.setValueAtTime(0,ctx.currentTime+t);
+        g.gain.linearRampToValueAtTime(.14,ctx.currentTime+t+.05);
+        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+.5);
+        o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.55);
+      });
+    }else{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.type='sawtooth';
+      o.frequency.setValueAtTime(260,ctx.currentTime);
+      o.frequency.linearRampToValueAtTime(120,ctx.currentTime+.35);
+      g.gain.setValueAtTime(.1,ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.38);
+      o.start();o.stop(ctx.currentTime+.4);
+    }
+  }catch(e){}
+}
+
+function doConfetti(){
+  const wrap=document.getElementById('cfWrap');
+  const cols=['#D93025','#1A7A3C','#B45309','#1D4ED8','#7C3AED'];
+  for(let i=0;i<55;i++){
+    const p=el('div','cf');
+    p.style.cssText=`left:${10+Math.random()*80}%;top:-20px;background:${cols[i%cols.length]};animation-delay:${Math.random()*.5}s;animation-duration:${1.2+Math.random()*.9}s;transform:rotate(${Math.random()*360}deg)`;
+    wrap.appendChild(p);setTimeout(()=>p.remove(),2800);
+  }
+}
+
+function el(tag,cls){const e=document.createElement(tag);if(cls)e.className=cls;return e;}
+</script>
+</body>
+</html>
